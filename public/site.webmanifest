@@ -1,0 +1,22 @@
+{
+  "name": "A K Enterprises - Mannequin Display Solutions",
+  "short_name": "AK Enterprises",
+  "description": "Premium mannequins, torsos & display decor for boutiques and events",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#c9a961",
+  "background_color": "#1a1a1a",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/"
+}

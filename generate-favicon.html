@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Favicon - A K Enterprises</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #c9a961;
+            margin-bottom: 30px;
+        }
+        canvas {
+            border: 2px solid #ddd;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        button {
+            background: #c9a961;
+            color: #1a1a1a;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px 10px 10px 0;
+        }
+        button:hover {
+            background: #b89551;
+        }
+        .preview {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .preview-item {
+            text-align: center;
+        }
+        .preview-item p {
+            margin: 10px 0 0 0;
+            font-size: 12px;
+            color: #666;
+        }
+        .instructions {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 30px;
+            border-left: 4px solid #c9a961;
+        }
+        .instructions h3 {
+            margin-top: 0;
+            color: #1a1a1a;
+        }
+        .instructions ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>A K Enterprises Favicon Generator</h1>
+        <p class="subtitle">Generate all favicon sizes for your website</p>
+        
+        <div class="preview">
+            <div class="preview-item">
+                <canvas id="canvas512" width="512" height="512"></canvas>
+                <p>512x512 (High Res)</p>
+            </div>
+            <div class="preview-item">
+                <canvas id="canvas192" width="192" height="192"></canvas>
+                <p>192x192 (Android)</p>
+            </div>
+            <div class="preview-item">
+                <canvas id="canvas180" width="180" height="180"></canvas>
+                <p>180x180 (Apple)</p>
+            </div>
+            <div class="preview-item">
+                <canvas id="canvas32" width="32" height="32"></canvas>
+                <p>32x32 (Standard)</p>
+            </div>
+            <div class="preview-item">
+                <canvas id="canvas16" width="16" height="16"></canvas>
+                <p>16x16 (Small)</p>
+            </div>
+        </div>
+
+        <button onclick="downloadAll()">Download All Favicons</button>
+        <button onclick="downloadSingle(512)">Download 512x512</button>
+        <button onclick="downloadSingle(192)">Download 192x192</button>
+
+        <div class="instructions">
+            <h3>📋 Instructions:</h3>
+            <ol>
+                <li>Click <strong>"Download All Favicons"</strong> to get all sizes</li>
+                <li>Save the downloaded files to your <code>public/</code> folder</li>
+                <li>Rename files as needed:
+                    <ul>
+                        <li>512x512 → <code>android-chrome-512x512.png</code></li>
+                        <li>192x192 → <code>android-chrome-192x192.png</code></li>
+                        <li>180x180 → <code>apple-touch-icon.png</code></li>
+                        <li>32x32 → <code>favicon-32x32.png</code></li>
+                        <li>16x16 → <code>favicon-16x16.png</code></li>
+                    </ul>
+                </li>
+                <li>Refresh your browser (Ctrl+Shift+R)</li>
+                <li>Your favicon should now appear! ✨</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        // Draw favicon on canvas
+        function drawFavicon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            const scale = size / 100;
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Draw rounded rectangle background
+            ctx.fillStyle = '#1a1a1a';
+            roundRect(ctx, 0, 0, size, size, 20 * scale);
+            ctx.fill();
+            
+            // Draw gold border
+            ctx.strokeStyle = '#c9a961';
+            ctx.lineWidth = 2 * scale;
+            roundRect(ctx, 1 * scale, 1 * scale, size - 2 * scale, size - 2 * scale, 20 * scale);
+            ctx.stroke();
+            
+            // Draw text "AK"
+            ctx.fillStyle = '#c9a961';
+            ctx.font = `bold ${48 * scale}px serif`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('AK', size / 2, size / 2 + (5 * scale));
+        }
+        
+        // Helper function for rounded rectangle
+        function roundRect(ctx, x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+        
+        // Download single favicon
+        function downloadSingle(size) {
+            const canvas = document.getElementById(`canvas${size}`);
+            const link = document.createElement('a');
+            link.download = `favicon-${size}x${size}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Download all favicons
+        function downloadAll() {
+            setTimeout(() => downloadSingle(512), 100);
+            setTimeout(() => downloadSingle(192), 300);
+            setTimeout(() => downloadSingle(180), 500);
+            setTimeout(() => downloadSingle(32), 700);
+            setTimeout(() => downloadSingle(16), 900);
+            alert('Downloading all favicon sizes! Check your downloads folder.');
+        }
+        
+        // Initialize - draw all sizes
+        window.onload = function() {
+            drawFavicon(document.getElementById('canvas512'), 512);
+            drawFavicon(document.getElementById('canvas192'), 192);
+            drawFavicon(document.getElementById('canvas180'), 180);
+            drawFavicon(document.getElementById('canvas32'), 32);
+            drawFavicon(document.getElementById('canvas16'), 16);
+        };
+    </script>
+</body>
+</html>
