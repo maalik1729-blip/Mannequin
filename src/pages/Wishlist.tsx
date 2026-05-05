@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { isProductInStock } from "@/data/products";
 import { Link } from "react-router-dom";
 import { useCurrency } from "@/context/CurrencyContext";
+import { FemaleCover } from "@/components/site/FemaleCover";
 
 export default function Wishlist() {
   useLenis();
@@ -58,6 +59,7 @@ export default function Wishlist() {
                       loading="lazy"
                       className={`absolute inset-0 w-full h-full object-contain transition-smooth group-hover:scale-105 ${!isProductInStock(p.id) ? 'opacity-50 grayscale' : ''}`}
                     />
+                    <FemaleCover id={p.id} scaleOnHover />
                     {!isProductInStock(p.id) && (
                       <div className="absolute inset-0 flex items-center justify-center bg-background/20 backdrop-blur-[2px]">
                         <span className="bg-obsidian text-white px-3 py-1.5 text-[10px] uppercase tracking-widest font-semibold flex items-center gap-1.5 shadow-xl">

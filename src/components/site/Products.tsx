@@ -4,6 +4,7 @@ import { PRODUCTS, isProductInStock } from "@/data/products";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import CurrencyToggle from "@/components/site/CurrencyToggle";
+import { FemaleCover } from "@/components/site/FemaleCover";
 
 export const Products = () => {
   const { toggleWishlist, isInWishlist } = useWishlist();
@@ -46,6 +47,8 @@ export const Products = () => {
                     height={750}
                     className="absolute inset-0 w-full h-full object-contain transition-smooth group-hover:scale-105"
                   />
+                  <FemaleCover id={p.id} scaleOnHover />
+
                   <button
                     aria-label="wishlist"
                     onClick={(e) => {

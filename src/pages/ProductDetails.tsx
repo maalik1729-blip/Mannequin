@@ -9,6 +9,7 @@ import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import CurrencyToggle from "@/components/site/CurrencyToggle";
+import { FemaleCover } from "@/components/site/FemaleCover";
 
 export default function ProductDetails() {
   useLenis();
@@ -77,6 +78,7 @@ export default function ProductDetails() {
           <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-start">
             <div className="bg-muted relative aspect-square overflow-hidden rounded-2xl shadow-soft">
               <img src={product.img} alt={product.name} className="absolute inset-0 w-full h-full object-contain" />
+              <FemaleCover id={product.id} />
             </div>
 
             <div className="flex flex-col pt-4 md:pt-10">
@@ -191,6 +193,7 @@ export default function ProductDetails() {
                       loading="lazy"
                       className="absolute inset-0 w-full h-full object-contain transition-smooth group-hover:scale-105"
                     />
+                    <FemaleCover id={p.id} scaleOnHover />
                     <button
                       aria-label="wishlist"
                       className="absolute top-3 right-3 w-10 h-10 grid place-items-center rounded-full bg-background/85 backdrop-blur shadow-sm hover:bg-gold hover:text-obsidian transition-smooth z-10"
