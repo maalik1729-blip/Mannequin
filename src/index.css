@@ -8,46 +8,46 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Ethereal Displays — luxury ivory + obsidian + champagne gold */
-    --background: 36 33% 97%;
-    --foreground: 30 12% 10%;
+    /* Atelier Rose — warm pearl + plum + rose-gold accent */
+    --background: 28 40% 97%;
+    --foreground: 280 18% 12%;
 
-    --card: 36 30% 99%;
-    --card-foreground: 30 12% 10%;
+    --card: 28 45% 99%;
+    --card-foreground: 280 18% 12%;
 
-    --popover: 36 30% 99%;
-    --popover-foreground: 30 12% 10%;
+    --popover: 28 45% 99%;
+    --popover-foreground: 280 18% 12%;
 
-    --primary: 30 12% 10%;
-    --primary-foreground: 36 33% 97%;
+    --primary: 280 22% 14%;
+    --primary-foreground: 28 40% 97%;
 
-    --secondary: 35 25% 92%;
-    --secondary-foreground: 30 12% 10%;
+    --secondary: 22 35% 93%;
+    --secondary-foreground: 280 18% 12%;
 
-    --muted: 35 20% 90%;
-    --muted-foreground: 30 8% 38%;
+    --muted: 22 25% 91%;
+    --muted-foreground: 280 10% 38%;
 
-    --accent: 38 55% 52%;
-    --accent-foreground: 30 20% 8%;
+    --accent: 16 65% 58%;
+    --accent-foreground: 280 30% 10%;
 
-    --gold: 38 55% 52%;
-    --gold-soft: 40 60% 78%;
-    --obsidian: 30 12% 8%;
-    --ivory: 36 33% 97%;
+    --gold: 16 65% 58%;
+    --gold-soft: 22 75% 84%;
+    --obsidian: 280 25% 10%;
+    --ivory: 28 40% 97%;
 
-    --gradient-gold: linear-gradient(135deg, hsl(40 70% 65%), hsl(35 55% 45%));
-    --gradient-dark: linear-gradient(180deg, hsl(30 12% 10%), hsl(30 14% 16%));
-    --gradient-fade: linear-gradient(180deg, hsl(36 33% 97% / 0), hsl(36 33% 97% / 1));
-    --shadow-luxe: 0 30px 80px -20px hsl(30 12% 10% / 0.35);
-    --shadow-soft: 0 10px 40px -10px hsl(30 12% 10% / 0.15);
+    --gradient-gold: linear-gradient(135deg, hsl(22 80% 72%), hsl(14 60% 52%));
+    --gradient-dark: linear-gradient(180deg, hsl(280 25% 10%), hsl(285 22% 18%));
+    --gradient-fade: linear-gradient(180deg, hsl(28 40% 97% / 0), hsl(28 40% 97% / 1));
+    --shadow-luxe: 0 30px 80px -20px hsl(280 25% 10% / 0.35);
+    --shadow-soft: 0 10px 40px -10px hsl(280 25% 10% / 0.15);
     --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 75% 58%;
+    --destructive-foreground: 28 40% 97%;
 
-    --border: 30 15% 85%;
-    --input: 30 15% 85%;
-    --ring: 38 55% 52%;
+    --border: 22 22% 86%;
+    --input: 22 22% 86%;
+    --ring: 16 65% 58%;
 
     --radius: 0.75rem;
 
