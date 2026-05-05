@@ -5,13 +5,6 @@ import { useWishlist } from "@/context/WishlistContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import CurrencyToggle from "@/components/site/CurrencyToggle";
 
-// Decorative cloth sash colours for female full-body mannequins
-const FEMALE_CLOTH: Record<string, { from: string; to: string; label: string }> = {
-  "black-female-trio": { from: "#b76e79", to: "#8a4a55", label: "Rose Gold" },
-  "gold-female-duo": { from: "#7a8b6b", to: "#5a6a4d", label: "Sage" },
-  "gold-white-female": { from: "#5a6c8c", to: "#3d4a66", label: "Dusty Blue" },
-};
-
 export const Products = () => {
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { format } = useCurrency();
@@ -37,7 +30,6 @@ export const Products = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-14">
           {[...PRODUCTS].reverse().map((p, i) => {
             const displayPrice = format(p.priceINR) + (p.priceSuffix ? ` ${p.priceSuffix}` : "");
-            const cloth = FEMALE_CLOTH[p.id];
             return (
               <Link
                 to={`/product/${p.id}`}
@@ -54,17 +46,6 @@ export const Products = () => {
                     height={750}
                     className="absolute inset-0 w-full h-full object-contain transition-smooth group-hover:scale-105"
                   />
-                  {cloth && (
-                    <div
-                      aria-hidden
-                      className="absolute left-1/2 top-[58%] -translate-x-1/2 w-[62%] h-5 rounded-sm shadow-lg pointer-events-none transition-smooth group-hover:scale-105"
-                      style={{
-                        background: `linear-gradient(135deg, ${cloth.from} 0%, ${cloth.to} 50%, ${cloth.from} 100%)`,
-                        transform: "translateX(-50%) rotate(-6deg)",
-                        boxShadow: `0 4px 12px ${cloth.to}55, inset 0 1px 0 rgba(255,255,255,0.25)`,
-                      }}
-                    />
-                  )}
                   <button
                     aria-label="wishlist"
                     onClick={(e) => {
@@ -86,18 +67,6 @@ export const Products = () => {
                   <div className="text-[10px] uppercase tracking-[0.3em] text-gold font-semibold">{p.tag}</div>
                   <h3 className="font-display text-xl mt-1 text-foreground font-semibold">{p.name}</h3>
                   <div className="mt-2 text-sm text-foreground font-bold font-price">{displayPrice}</div>
-                  {cloth && (
-                    <div className="mt-3 flex items-center gap-2">
-                      <span
-                        aria-hidden
-                        className="inline-block w-4 h-4 rounded-full ring-2 ring-background shadow-sm"
-                        style={{ background: `linear-gradient(135deg, ${cloth.from}, ${cloth.to})` }}
-                      />
-                      <span className="text-[10px] uppercase tracking-[0.25em] text-foreground/70 font-medium">
-                        {cloth.label} drape
-                      </span>
-                    </div>
-                  )}
                 </div>
               </Link>
             )
