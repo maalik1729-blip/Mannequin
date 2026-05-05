@@ -57,12 +57,6 @@ export const Hero = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-xs uppercase tracking-[0.4em] text-white font-medium flex flex-col items-center gap-2">
-        Scroll
-        <span className="block w-px h-10 bg-white/50 overflow-hidden">
-          <span className="block w-px h-full bg-gold animate-[marquee_2s_linear_infinite]" />
-        </span>
-      </div>
     </section>
   );
 };
