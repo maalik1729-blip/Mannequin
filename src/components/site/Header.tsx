@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { Menu, X, Search, ShoppingBag, Heart } from "lucide-react";
 import { PRODUCTS } from "@/data/products";
 import { useCart } from "@/context/CartContext";
@@ -13,7 +14,7 @@ const NAV = [
   { label: "Contact", href: "/#contact" },
 ];
 
-const Logo = () => (
+const Logo = ({ textColor }: { textColor: string }) => (
   <a href="/#home" className="flex items-center gap-2 group flex-shrink-0">
     <svg width="34" height="34" viewBox="0 0 40 40" fill="none" aria-hidden className="flex-shrink-0">
       <circle cx="20" cy="20" r="19" stroke="currentColor" strokeWidth="1.5" className="text-gold" />
@@ -24,7 +25,7 @@ const Logo = () => (
       <circle cx="20" cy="20" r="2" fill="currentColor" className="text-gold" />
     </svg>
     <div className="leading-tight">
-      <div className="font-display text-base md:text-lg tracking-wide text-white font-semibold whitespace-nowrap">A K Enterprises</div>
+      <div className={`font-display text-base md:text-lg tracking-wide ${textColor} font-semibold whitespace-nowrap transition-colors`}>A K Enterprises</div>
       <div className="text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-gold font-medium -mt-0.5 whitespace-nowrap">
         Display Solutions
       </div>
@@ -33,6 +34,7 @@ const Logo = () => (
 );
 
 export const Header = () => {
+  const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -45,6 +47,10 @@ export const Header = () => {
   const filtered = query.trim().length > 1
     ? PRODUCTS.filter((p) => p.name.toLowerCase().includes(query.toLowerCase()) || p.tag.toLowerCase().includes(query.toLowerCase()))
     : [];
+
+  const isDarkText = pathname !== "/" && !scrolled;
+  const textColor = isDarkText ? "text-obsidian" : "text-white";
+  const hoverBgClass = isDarkText ? "hover:bg-obsidian/10" : "hover:bg-white/10";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -85,13 +91,13 @@ export const Header = () => {
         </div>
       </div>
       <div className="container flex items-center justify-between h-20 relative z-10 gap-4">
-        <Logo />
+        <Logo textColor={textColor} />
         <nav className="hidden lg:flex items-center gap-6 xl:gap-10">
           {NAV.map((n) => (
             <a
               key={n.label}
               href={n.href}
-              className="text-sm uppercase tracking-[0.2em] text-white font-medium hover:text-gold transition-smooth relative group whitespace-nowrap"
+              className={`text-sm uppercase tracking-[0.2em] ${textColor} font-medium hover:text-gold transition-smooth relative group whitespace-nowrap`}
             >
               {n.label}
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold group-hover:w-full transition-smooth" />
@@ -101,16 +107,16 @@ export const Header = () => {
         <div className="flex items-center gap-1 md:gap-2 flex-shrink-0">
           {/* Inline search bar */}
           {searchOpen ? (
-            <div className="relative hidden sm:flex items-center gap-2 bg-white/10 border border-white/20 px-3 py-1.5 rounded-full">
+            <div className={`relative hidden sm:flex items-center gap-2 ${isDarkText ? 'bg-obsidian/5 border-obsidian/10' : 'bg-white/10 border-white/20'} px-3 py-1.5 rounded-full`}>
               <Search size={15} className="text-gold flex-shrink-0" />
               <input
                 ref={searchRef}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search products..."
-                className="bg-transparent text-white text-sm outline-none placeholder:text-white/40 w-44 lg:w-56"
+                className={`bg-transparent ${textColor} text-sm outline-none ${isDarkText ? 'placeholder:text-obsidian/40' : 'placeholder:text-white/40'} w-44 lg:w-56`}
               />
-              <button onClick={() => setSearchOpen(false)} className="text-white/60 hover:text-white transition-smooth ml-1 rounded-full">
+              <button onClick={() => setSearchOpen(false)} className={`${isDarkText ? 'text-obsidian/60 hover:text-obsidian' : 'text-white/60 hover:text-white'} transition-smooth ml-1 rounded-full`}>
                 <X size={15} />
               </button>
               {/* Dropdown results */}
@@ -142,14 +148,14 @@ export const Header = () => {
               )}
             </div>
           ) : (
-            <button aria-label="Search" onClick={() => setSearchOpen(true)} className="p-2 rounded-full text-white hover:text-gold hover:bg-white/10 transition-smooth hidden sm:block">
+            <button aria-label="Search" onClick={() => setSearchOpen(true)} className={`p-2 rounded-full ${textColor} hover:text-gold ${hoverBgClass} transition-smooth hidden sm:block`}>
               <Search size={18} />
             </button>
           )}
           <a
             href="/wishlist"
             aria-label="Wishlist"
-            className="p-2 rounded-full text-white hover:text-gold hover:bg-white/10 transition-smooth relative hidden sm:block"
+            className={`p-2 rounded-full ${textColor} hover:text-gold ${hoverBgClass} transition-smooth relative hidden sm:block`}
           >
             <Heart size={18} />
             {totalWishlist > 0 && (
@@ -161,7 +167,7 @@ export const Header = () => {
           <button
             aria-label="Cart"
             onClick={() => setCartOpen(true)}
-            className="p-2 rounded-full text-white hover:text-gold hover:bg-white/10 transition-smooth relative hidden sm:block"
+            className={`p-2 rounded-full ${textColor} hover:text-gold ${hoverBgClass} transition-smooth relative hidden sm:block`}
           >
             <ShoppingBag size={18} />
             {totalItems > 0 && (
@@ -177,7 +183,7 @@ export const Header = () => {
             Get a Quote
           </a>
           <button
-            className="lg:hidden p-2 rounded-full text-white hover:bg-white/10 transition-smooth"
+            className={`lg:hidden p-2 rounded-full ${textColor} ${hoverBgClass} transition-smooth`}
             onClick={() => setOpen((o) => !o)}
             aria-label="Menu"
           >
