@@ -70,18 +70,9 @@ export const Header = () => {
       className={`fixed top-0 inset-x-0 z-50 transition-smooth ${
         scrolled
           ? "bg-obsidian/95 backdrop-blur-xl border-b border-gold/20 shadow-luxe"
-          : "bg-obsidian/40 backdrop-blur-sm"
+          : "bg-transparent"
       }`}
     >
-      {/* Background image for navbar */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <img
-          src="/hero.jpg"
-          alt=""
-          className="w-full h-full object-cover opacity-15"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-obsidian/95 to-obsidian/98" />
-      </div>
       
       <div className="hidden md:block bg-obsidian/80 text-gold text-xs border-b border-gold/20 relative z-10">
         <div className="container flex justify-between py-2">
@@ -196,16 +187,6 @@ export const Header = () => {
       </div>
       {open && (
         <div className="lg:hidden bg-obsidian/98 backdrop-blur-xl border-t border-gold/20 relative">
-          {/* Background image for mobile menu */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <img
-              src="/hero.jpg"
-              alt=""
-              className="w-full h-full object-cover opacity-15"
-            />
-            <div className="absolute inset-0 bg-obsidian/90" />
-          </div>
-          
           <div className="container py-6 flex flex-col gap-5 relative z-10">
             {NAV.map((n) => (
               <a
