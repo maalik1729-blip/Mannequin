@@ -65,15 +65,15 @@ export default function Checkout() {
                 <section>
                   <h2 className="text-xl font-display font-semibold mb-6 pb-2 border-b border-border">Shipping Information</h2>
                   <div className="grid grid-cols-2 gap-4">
-                    <Field label="First Name" required />
-                    <Field label="Last Name" required />
-                    <div className="col-span-2"><Field label="Email Address" type="email" required /></div>
-                    <div className="col-span-2"><Field label="Phone Number" type="tel" required /></div>
+                    <Field label="First Name" required pattern="^[A-Za-z\s\-\.]+$" title="Only letters, spaces, hyphens, and periods are allowed" />
+                    <Field label="Last Name" required pattern="^[A-Za-z\s\-\.]+$" title="Only letters, spaces, hyphens, and periods are allowed" />
+                    <div className="col-span-2"><Field label="Email Address" type="email" required pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$" title="Please enter a valid email address (e.g., yourname@example.com)" /></div>
+                    <div className="col-span-2"><Field label="Phone Number" type="tel" required pattern="^[0-9]{10}$" title="Please enter a valid 10-digit phone number" /></div>
                     <div className="col-span-2"><Field label="Street Address" required /></div>
-                    <Field label="City" required />
-                    <Field label="State / Province" required />
-                    <Field label="Postal / Zip Code" required />
-                    <Field label="Country" required />
+                    <Field label="City" required pattern="^[A-Za-z\s\-\.]+$" title="Please enter a valid city name" />
+                    <Field label="State / Province" required pattern="^[A-Za-z\s\-\.]+$" title="Please enter a valid state or province" />
+                    <Field label="Postal / Zip Code" required pattern="^[A-Za-z0-9\s\-]{3,10}$" title="Please enter a valid postal or zip code" />
+                    <Field label="Country" required pattern="^[A-Za-z\s\-\.]+$" title="Please enter a valid country name" />
                   </div>
                 </section>
 
