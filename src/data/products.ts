@@ -19,6 +19,15 @@ import royalSofa from "@/assets/royal-wedding-sofa.png";
 import mandapWheel from "@/assets/mandap-chariot-wheel.png";
 import goldenThrone from "@/assets/golden-royal-throne.png";
 import laughingBuddhaDisplay from "@/assets/laughing-buddha-display.png";
+import stageMandabamNew from "@/assets/stage-mandabam.png";
+import stageMandabam680k from "@/assets/stage-mandabam-680k.png";
+import stageMandabam650k from "@/assets/stage-mandabam-650k.png";
+import templeOpenStageMandabam from "@/assets/temple-open-stage-mandabam.png";
+import threeTypesBigStageMandabam from "@/assets/three-types-big-stage-mandabam.png";
+import openTypeStageMandabam from "@/assets/open-type-stage-mandabam.png";
+import entranceArch150k1 from "@/assets/entrance-arch-150k.png";
+import entranceArch150k2 from "@/assets/entrance-arch-150k-2.png";
+import woodenTypeMandabamWalkwayElephant from "@/assets/wooden-type-mandabam-walkway-elephant.png";
 
 export interface Product {
   id: string;
@@ -45,6 +54,15 @@ export const PRODUCTS: Product[] = [
   { id: "white-male-pose", name: "White Male Pose", tag: "Full Body Male", priceINR: 22500, priceSuffix: "each", price: "₹ 22,500 each", img: whiteMalePose },
   { id: "matte-black-male", name: "Matte Black Male", tag: "Full Body Male", priceINR: 22500, priceSuffix: "each", price: "₹ 22,500 each", img: matteBlackMale },
   // New arrivals – Decor & Mandap
+  { id: "wooden-type-mandabam-walkway-elephant", name: "Wooden type mandabam with walk way Elephant", tag: "Mandap", priceINR: 3000000, price: "₹ 30,00,000", img: woodenTypeMandabamWalkwayElephant },
+  { id: "entrance-arch-150k-1", name: "Entrance arch", tag: "Mandap", priceINR: 150000, priceSuffix: "each", price: "₹ 1,50,000 each", img: entranceArch150k1 },
+  { id: "entrance-arch-150k-2", name: "Entrance arch", tag: "Mandap", priceINR: 150000, priceSuffix: "each", price: "₹ 1,50,000 each", img: entranceArch150k2 },
+  { id: "open-type-stage-mandabam", name: "Open type stage Mandabam", tag: "Mandap", priceINR: 750000, price: "₹ 7,50,000", img: openTypeStageMandabam },
+  { id: "three-types-big-stage-mandabam", name: "Three types of big stage Mandabam", tag: "Mandap", priceINR: 1250000, price: "₹ 12,50,000", img: threeTypesBigStageMandabam },
+  { id: "temple-open-stage-mandabam", name: "Temple open stage Mandabam", tag: "Mandap", priceINR: 980000, price: "₹ 9,80,000", img: templeOpenStageMandabam },
+  { id: "stage-mandabam-650k", name: "Stage Mandabam", tag: "Mandap", priceINR: 650000, price: "₹ 6,50,000", img: stageMandabam650k },
+  { id: "stage-mandabam-680k", name: "Stage Mandabam", tag: "Mandap", priceINR: 680000, price: "₹ 6,80,000", img: stageMandabam680k },
+  { id: "stage-mandabam-new", name: "Stage Mandabam", tag: "Mandap", priceINR: 725000, price: "₹ 7,25,000", img: stageMandabamNew },
   { id: "royal-wedding-sofa", name: "VIP Chair", tag: "Mandap", priceINR: 35000, price: "₹ 35,000", img: royalSofa },
   { id: "dholi", name: "Kuberan scent spray", tag: "Decor Statue", priceINR: 27500, price: "₹ 27,500", img: mandapWheel },
   { id: "vip-chair", name: "Dholi", tag: "Mandap", priceINR: 45000, price: "₹ 45,000", img: goldenThrone },
