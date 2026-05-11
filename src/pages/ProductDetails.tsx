@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import Header from "@/components/site/Header";
 import Footer from "@/components/site/Footer";
 import { PRODUCTS, isProductInStock } from "@/data/products";
-import { Heart, ArrowLeft, ShoppingBag, ShoppingCart, Check, Star, Lock } from "lucide-react";
+import { Heart, ArrowLeft, ShoppingBag, ShoppingCart, Check, Lock } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLenis, useReveal } from "@/hooks/useLenis";
 import { useCart } from "@/context/CartContext";
@@ -20,11 +20,8 @@ export default function ProductDetails() {
   const { format } = useCurrency();
   const [added, setAdded] = useState(false);
 
-  // Generate stable mock data based on ID length
-  const rating = product ? 4 + (product.id.length % 10) / 10 : 4.5; // e.g. 4.3, 4.8
-  const reviewsCount = product ? 24 + (product.id.length * 3) : 56;
+
   const inStock = product ? isProductInStock(product.id) : true;
-  const stockLeft = product ? 3 + (product.id.length % 5) : 8;
 
   // Price logic using numeric priceINR
   let originalPrice = "";
@@ -83,16 +80,7 @@ export default function ProductDetails() {
               <span className="text-xs uppercase tracking-[0.4em] text-gold font-semibold">{product.tag}</span>
               <h1 className="font-display text-4xl lg:text-5xl mt-4 font-semibold text-foreground">{product.name}</h1>
               
-              <div className="flex items-center gap-4 mt-4">
-                <div className="flex items-center text-gold">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} size={16} fill={i < Math.floor(rating) ? "currentColor" : "none"} className={i < Math.floor(rating) ? "text-gold" : "text-border"} />
-                  ))}
-                  <span className="text-foreground ml-2 text-sm font-medium">{rating.toFixed(1)}</span>
-                </div>
-                <span className="text-foreground/40 text-sm">|</span>
-                <span className="text-foreground/60 text-sm">{reviewsCount} reviews</span>
-              </div>
+
 
               <div className="mt-6">
                 <div className="flex flex-wrap items-end gap-3">
