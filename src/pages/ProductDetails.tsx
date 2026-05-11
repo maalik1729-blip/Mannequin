@@ -117,7 +117,7 @@ export default function ProductDetails() {
               <div className="w-full h-[1px] bg-border my-6"></div>
               
               <p className="text-foreground/80 leading-relaxed">
-                Experience unparalleled craftsmanship with the {product.name}. Designed to elevate your visual merchandising and showcase garments with exceptional elegance. Perfect for high-end retail boutiques, showrooms, and exhibitions.
+                {product.description}
               </p>
 
               <div className="mt-6 flex items-center gap-2">
