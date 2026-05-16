@@ -8,46 +8,47 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Atelier Rose — warm pearl + plum + rose-gold accent */
-    --background: 28 40% 97%;
-    --foreground: 280 18% 12%;
+    /* Smooth Atelier — warm linen + espresso + bronze accent
+       All hues live in 25–36°; saturations 12–38% for a tonal, smooth feel. */
+    --background: 36 28% 96%;
+    --foreground: 25 14% 16%;
 
-    --card: 28 45% 99%;
-    --card-foreground: 280 18% 12%;
+    --card: 36 32% 98%;
+    --card-foreground: 25 14% 16%;
 
-    --popover: 28 45% 99%;
-    --popover-foreground: 280 18% 12%;
+    --popover: 36 32% 98%;
+    --popover-foreground: 25 14% 16%;
 
-    --primary: 280 22% 14%;
-    --primary-foreground: 28 40% 97%;
+    --primary: 25 16% 18%;
+    --primary-foreground: 36 28% 96%;
 
-    --secondary: 22 35% 93%;
-    --secondary-foreground: 280 18% 12%;
+    --secondary: 32 20% 92%;
+    --secondary-foreground: 25 14% 16%;
 
-    --muted: 22 25% 91%;
-    --muted-foreground: 280 10% 38%;
+    --muted: 32 16% 90%;
+    --muted-foreground: 25 8% 42%;
 
-    --accent: 16 65% 58%;
-    --accent-foreground: 280 30% 10%;
+    --accent: 32 35% 52%;
+    --accent-foreground: 36 28% 96%;
 
-    --gold: 16 65% 58%;
-    --gold-soft: 22 75% 84%;
-    --obsidian: 280 25% 10%;
-    --ivory: 28 40% 97%;
+    --gold: 32 35% 52%;
+    --gold-soft: 32 45% 86%;
+    --obsidian: 25 16% 14%;
+    --ivory: 36 28% 96%;
 
-    --gradient-gold: linear-gradient(135deg, hsl(22 80% 72%), hsl(14 60% 52%));
-    --gradient-dark: linear-gradient(180deg, hsl(280 25% 10%), hsl(285 22% 18%));
-    --gradient-fade: linear-gradient(180deg, hsl(28 40% 97% / 0), hsl(28 40% 97% / 1));
-    --shadow-luxe: 0 30px 80px -20px hsl(280 25% 10% / 0.35);
-    --shadow-soft: 0 10px 40px -10px hsl(280 25% 10% / 0.15);
+    --gradient-gold: linear-gradient(135deg, hsl(38 45% 68%), hsl(28 32% 46%));
+    --gradient-dark: linear-gradient(180deg, hsl(25 16% 14%), hsl(28 14% 22%));
+    --gradient-fade: linear-gradient(180deg, hsl(36 28% 96% / 0), hsl(36 28% 96% / 1));
+    --shadow-luxe: 0 30px 80px -20px hsl(25 16% 14% / 0.22);
+    --shadow-soft: 0 10px 40px -10px hsl(25 16% 14% / 0.10);
     --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 
-    --destructive: 0 75% 58%;
-    --destructive-foreground: 28 40% 97%;
+    --destructive: 8 55% 52%;
+    --destructive-foreground: 36 28% 96%;
 
-    --border: 22 22% 86%;
-    --input: 22 22% 86%;
-    --ring: 16 65% 58%;
+    --border: 30 14% 86%;
+    --input: 30 14% 86%;
+    --ring: 32 35% 52%;
 
     --radius: 0.75rem;
 
@@ -133,6 +134,45 @@ All colors MUST be HSL.
   .lenis.lenis-smooth { scroll-behavior: auto !important; }
   .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
   .lenis.lenis-stopped { overflow: hidden; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2
+      bg-gold text-obsidian font-bold uppercase tracking-widest
+      rounded-full px-7 py-3.5 text-sm
+      hover:bg-white transition-smooth shadow-md
+      disabled:opacity-40 disabled:cursor-not-allowed
+      active:scale-[0.98];
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2
+      bg-obsidian text-white font-bold uppercase tracking-widest
+      rounded-full px-7 py-3.5 text-sm
+      hover:bg-gold hover:text-obsidian transition-smooth
+      disabled:opacity-40 disabled:cursor-not-allowed
+      active:scale-[0.98];
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2
+      border-2 border-obsidian text-obsidian font-semibold uppercase tracking-widest
+      rounded-full px-7 py-3.5 text-sm
+      hover:bg-obsidian hover:text-white transition-smooth
+      disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+  .btn-ghost {
+    @apply text-foreground/60 text-sm uppercase tracking-widest
+      hover:text-foreground underline-offset-4 hover:underline transition-colors;
+  }
+  .field-input {
+    @apply w-full rounded-lg border border-border bg-background/50 px-4 py-3
+      text-sm text-foreground placeholder:text-foreground/30
+      outline-none transition-colors
+      focus:border-gold focus:ring-1 focus:ring-gold/30;
+  }
+  .field-label {
+    @apply block text-xs uppercase tracking-widest text-foreground/70 font-medium mb-1.5;
+  }
 }
 
 @layer utilities {

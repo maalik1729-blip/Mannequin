@@ -26,13 +26,13 @@ export default function CurrencyToggle() {
             onClick={() => setCurrency(opt.value)}
             aria-pressed={active}
             title={opt.label}
-            className={`px-3 h-full text-[10px] font-semibold uppercase tracking-[0.2em] transition-all duration-200 flex items-center gap-1 border-r border-border last:border-r-0 ${
+            className={`px-3 h-full text-xs font-semibold uppercase tracking-widest transition-all duration-200 flex items-center gap-1 border-r border-border last:border-r-0 ${
               active
                 ? "bg-gold text-obsidian"
                 : "bg-background text-foreground/60 hover:text-foreground hover:bg-foreground/5"
             }`}
           >
-            <span className="text-[11px]">{opt.symbol}</span>
+            <span className="text-xs">{opt.symbol}</span>
             {opt.label}
           </button>
         );

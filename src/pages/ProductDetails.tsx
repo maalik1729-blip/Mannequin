@@ -22,19 +22,11 @@ export default function ProductDetails() {
 
 
   const inStock = product ? isProductInStock(product.id) : true;
-
-  // Price logic using numeric priceINR
-  let originalPrice = "";
-  let percentOff = 0;
-  if (product) {
-    percentOff = 15 + (product.id.length % 15); // e.g. 15% to 29%
-    const orig = Math.round(product.priceINR / (1 - percentOff / 100));
-    originalPrice = format(orig);
-  }
+  const [qty, setQty] = useState(1);
 
   const handleAddToCart = () => {
     if (!product) return;
-    addToCart(product);
+    for (let i = 0; i < qty; i++) addToCart(product);
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
@@ -84,18 +76,10 @@ export default function ProductDetails() {
 
               <div className="mt-6">
                 <div className="flex flex-wrap items-end gap-3">
-                  <p className="text-3xl text-foreground font-bold font-price">
+                  <p className="text-3xl text-gold font-bold font-price">
                     {format(product.priceINR)}
                     {product.priceSuffix && <span className="text-lg font-medium text-foreground/60 ml-1">/{product.priceSuffix}</span>}
                   </p>
-                  {originalPrice && (
-                    <>
-                      <p className="text-lg text-foreground/50 line-through mb-1 font-price">{originalPrice}</p>
-                      <span className="bg-red-500/10 text-red-500 px-2 py-0.5 rounded text-xs font-bold mb-1.5 ml-1">
-                        {percentOff}% OFF
-                      </span>
-                    </>
-                  )}
                 </div>
                 <div className="mt-3">
                   <CurrencyToggle />
@@ -108,30 +92,61 @@ export default function ProductDetails() {
                 {product.description}
               </p>
 
-              <div className="mt-6 flex items-center gap-2">
-                <div className={`w-2.5 h-2.5 rounded-full ${inStock ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                <span className="text-sm font-medium">
-                  {inStock ? "In Stock" : "Out of Stock"}
-                </span>
+              <div className="mt-6">
+                {inStock ? (
+                  <span className="inline-flex items-center gap-1.5 bg-green-500/10 text-green-700 text-xs font-semibold px-3 py-1.5 rounded-full">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" aria-hidden="true" />
+                    In Stock
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 bg-red-500/10 text-red-600 text-xs font-semibold px-3 py-1.5 rounded-full">
+                    <span className="w-1.5 h-1.5 rounded-full bg-red-500 inline-block" aria-hidden="true" />
+                    Currently Unavailable
+                  </span>
+                )}
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3 mt-10">
+              {/* Quantity stepper */}
+              {inStock && (
+                <div className="mt-6 flex items-center gap-4">
+                  <span className="text-sm text-foreground/70 uppercase tracking-widest font-medium">Qty</span>
+                  <div className="flex items-center border border-border rounded-full overflow-hidden">
+                    <button
+                      onClick={() => setQty((q) => Math.max(1, q - 1))}
+                      aria-label="Decrease quantity"
+                      className="w-10 h-10 flex items-center justify-center hover:bg-muted transition-smooth"
+                    >
+                      <span className="text-lg leading-none">−</span>
+                    </button>
+                    <span className="w-10 text-center text-sm font-semibold font-price">{qty}</span>
+                    <button
+                      onClick={() => setQty((q) => q + 1)}
+                      aria-label="Increase quantity"
+                      className="w-10 h-10 flex items-center justify-center hover:bg-muted transition-smooth"
+                    >
+                      <span className="text-lg leading-none">+</span>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              <div className="flex flex-col sm:flex-row gap-3 mt-8">
                 {inStock ? (
-                  <Link to={`/checkout/${product.id}`} className="flex-1 bg-obsidian text-white py-4 uppercase tracking-[0.2em] text-sm rounded-full hover:bg-gold hover:text-obsidian transition-smooth flex justify-center items-center gap-2">
+                  <Link to={`/checkout/${product.id}`} className="flex-1 bg-obsidian text-white py-4 uppercase tracking-widest text-sm rounded-full hover:bg-gold hover:text-obsidian transition-smooth flex justify-center items-center gap-2">
                     <ShoppingBag size={18} />
                     Buy Now
                   </Link>
                 ) : (
-                  <button disabled className="flex-1 bg-muted text-foreground/40 py-4 uppercase tracking-[0.2em] text-sm rounded-full cursor-not-allowed flex justify-center items-center gap-2">
+                  <button disabled className="flex-1 bg-muted text-foreground/40 py-4 uppercase tracking-widest text-sm rounded-full cursor-not-allowed flex justify-center items-center gap-2">
                     <Lock size={18} />
-                    Out of Stock
+                    Unavailable
                   </button>
                 )}
                 
                 <button
                   onClick={handleAddToCart}
                   disabled={!inStock}
-                  className={`flex-1 border py-4 uppercase tracking-[0.2em] text-sm rounded-full transition-smooth flex justify-center items-center gap-2 ${
+                  className={`flex-1 border py-4 uppercase tracking-widest text-sm rounded-full transition-smooth flex justify-center items-center gap-2 ${
                     !inStock 
                       ? "border-border text-foreground/40 cursor-not-allowed bg-muted/50" 
                       : added
@@ -143,6 +158,7 @@ export default function ProductDetails() {
                   {!inStock ? "Unavailable" : added ? "Added!" : "Add to Cart"}
                 </button>
                 <button
+                  aria-label={isInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
                   onClick={() => toggleWishlist(product)}
                   className={`w-12 h-14 sm:h-auto rounded-full border transition-smooth flex-shrink-0 grid place-items-center ${
                     isInWishlist(product.id)
@@ -154,9 +170,8 @@ export default function ProductDetails() {
                 </button>
               </div>
 
-              <div className="mt-12 space-y-4 text-sm text-foreground/70">
-                <p><strong>SKU:</strong> MNQ-{product.id.substring(0, 6).toUpperCase()}</p>
-                <p><strong>Category:</strong> {product.tag}</p>
+              <div className="mt-10 space-y-2 text-sm text-foreground/70">
+                <p><span className="text-xs uppercase tracking-widest text-foreground/50 font-medium">Category:</span> <span className="ml-2">{product.tag}</span></p>
               </div>
             </div>
           </div>
@@ -180,15 +195,17 @@ export default function ProductDetails() {
                       className="absolute inset-0 w-full h-full object-contain transition-smooth group-hover:scale-105"
                     />
                     <button
-                      aria-label="wishlist"
-                      className="absolute top-3 right-3 w-10 h-10 grid place-items-center rounded-full bg-background/85 backdrop-blur shadow-sm hover:bg-gold hover:text-obsidian transition-smooth z-10"
-                      onClick={(e) => e.preventDefault()}
+                      aria-label={`${isInWishlist(p.id) ? 'Remove from' : 'Add to'} wishlist: ${p.name}`}
+                      className={`absolute top-3 right-3 w-10 h-10 grid place-items-center rounded-full bg-background/85 backdrop-blur shadow-sm transition-smooth z-10 ${
+                        isInWishlist(p.id) ? 'text-red-500' : 'hover:bg-gold hover:text-obsidian'
+                      }`}
+                      onClick={(e) => { e.preventDefault(); toggleWishlist(p); }}
                     >
-                      <Heart size={15} />
+                      <Heart size={15} className={isInWishlist(p.id) ? 'fill-red-500' : ''} />
                     </button>
                   </div>
                   <div className="p-4 text-center">
-                    <div className="text-[10px] uppercase tracking-[0.3em] text-gold font-semibold">{p.tag}</div>
+                    <div className="text-xs uppercase tracking-widest text-foreground/50 font-semibold">{p.tag}</div>
                     <h3 className="font-display text-lg mt-1 text-foreground font-semibold truncate">{p.name}</h3>
                     <div className="mt-1 text-sm text-foreground font-bold font-price">
                       {format(p.priceINR)}{p.priceSuffix ? ` ${p.priceSuffix}` : ""}

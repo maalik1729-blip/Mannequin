@@ -1,62 +1,106 @@
 import { ArrowRight } from "lucide-react";
+
+const STATS = [
+  ["6+", "Years"],
+  ["100+", "Boutiques"],
+  ["40+", "Cities"],
+] as const;
+
 export const Hero = () => {
   return (
-    <section id="home" className="relative min-h-screen flex items-center overflow-hidden bg-obsidian text-ivory">
-      {/* Background image from public folder */}
+    <section id="home" className="relative min-h-screen flex items-end overflow-hidden bg-obsidian text-ivory">
+      {/* Background image */}
       <img
         src="/hero.jpg"
         alt="Professional mannequin display"
         width={1920}
         height={1080}
-        className="absolute inset-0 w-full h-full object-cover opacity-40"
+        className="absolute inset-0 w-full h-full object-cover opacity-55"
       />
-      {/* Stronger overlay for better text visibility with any image */}
-      <div className="absolute inset-0 bg-gradient-to-r from-obsidian/95 via-obsidian/85 to-obsidian/70" />
-      <div className="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-transparent to-obsidian/40" />
+      {/* Softer two-stop gradient — let the image breathe, ensure copy legibility on the left */}
+      <div className="absolute inset-0 bg-gradient-to-r from-obsidian/90 via-obsidian/55 to-obsidian/10" />
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-obsidian/90 to-transparent" />
 
-      <div className="container relative z-10 grid lg:grid-cols-12 gap-8 lg:gap-12 pt-32 pb-24 px-4">
-        <div className="lg:col-span-7 reveal">
-          <div className="flex items-center gap-3 mb-6">
-            <span className="h-px w-10 bg-gold" />
-            <span className="text-[10px] md:text-xs uppercase tracking-[0.3em] md:tracking-[0.4em] text-gold">Est. Premium Display Atelier</span>
+      {/* Editorial corner markers — top-left atelier mark, top-right index */}
+      <div className="absolute top-28 left-0 right-0 z-10 pointer-events-none">
+        <div className="container flex items-start justify-between px-4">
+          <div className="flex items-center gap-3 text-ivory/70">
+            <span className="h-px w-6 bg-ivory/40" />
+            <span className="text-[11px] uppercase tracking-[0.25em] font-medium">Atelier · Chennai</span>
           </div>
-          <h1 className="font-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl leading-[0.95] text-balance text-white drop-shadow-lg">
-            Sculpting <em className="text-gold not-italic">silent</em><br/>
-            storytellers for<br/> elevated spaces.
+          <span className="text-[11px] uppercase tracking-[0.25em] text-ivory/40 font-price font-medium">N° 01 / 2026</span>
+        </div>
+      </div>
+
+      <div className="container relative z-10 grid lg:grid-cols-12 gap-8 lg:gap-12 pt-40 pb-20 md:pb-28 px-4">
+        <div className="lg:col-span-7">
+          {/* Sub-label — gold reserved (per MD: section sub-labels) */}
+          <div className="flex items-center gap-3 mb-7">
+            <span className="h-px w-8 bg-gold/80" />
+            <span className="text-xs uppercase tracking-widest text-gold/90 font-medium">Premium Display Atelier</span>
+          </div>
+
+          <h1 className="font-display text-4xl sm:text-5xl md:text-7xl lg:text-[7.5rem] leading-[0.92] text-balance text-ivory">
+            Sculpting <em className="not-italic font-light italic text-ivory/70">silent</em><br/>
+            storytellers for<br/>
+            <span className="text-ivory/60">elevated</span> spaces.
           </h1>
-          <p className="mt-6 md:mt-8 max-w-xl text-white text-base md:text-lg leading-relaxed drop-shadow-md">
+
+          <p className="mt-7 md:mt-9 max-w-md text-ivory/75 text-[15px] md:text-base leading-relaxed">
             From matte-black torso busts to grand wedding mandaps — A K Enterprises
             crafts mannequins, statues and decor that turn ordinary
             rooms into runways.
           </p>
-          <div className="mt-8 md:mt-10 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-4">
-            <a href="#products" className="group inline-flex items-center justify-center gap-3 bg-gold text-obsidian px-6 md:px-7 py-3 md:py-4 text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.25em] font-bold rounded-full hover:bg-white transition-smooth shadow-lg w-full sm:w-auto">
+
+          <div className="mt-9 md:mt-11 flex flex-col sm:flex-row flex-wrap items-start sm:items-center gap-3 sm:gap-5">
+            {/* Primary CTA — gold (per MD: primary action) */}
+            <a
+              href="#products"
+              className="group inline-flex items-center justify-center gap-3 bg-gold text-obsidian px-7 py-4 text-xs uppercase tracking-widest font-bold rounded-full hover:bg-ivory transition-colors duration-300 shadow-md w-full sm:w-auto"
+            >
               Explore Collection
-              <ArrowRight size={16} className="group-hover:translate-x-1 transition-smooth" />
+              <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform duration-300" />
             </a>
-            <a href="#enquiry" className="inline-flex items-center justify-center gap-3 px-6 md:px-7 py-3 md:py-4 text-xs md:text-sm uppercase tracking-[0.2em] md:tracking-[0.25em] border-2 border-white text-white font-semibold rounded-full hover:bg-white hover:text-obsidian transition-smooth w-full sm:w-auto">
-              Custom Enquiry
+            {/* Secondary — minimal text link, no border (more editorial than outline button) */}
+            <a
+              href="/request-quote"
+              className="group inline-flex items-center gap-2 px-2 py-2 text-xs uppercase tracking-widest text-ivory/80 hover:text-ivory transition-colors"
+            >
+              Request a Quote
+              <span className="inline-block w-6 h-px bg-ivory/40 group-hover:w-10 group-hover:bg-ivory transition-all duration-300" />
             </a>
           </div>
+
+          {/* Mobile stats strip */}
+          <dl className="flex lg:hidden items-end gap-8 mt-12 pt-7 border-t border-ivory/15">
+            {STATS.map(([n, l]) => (
+              <div key={l}>
+                <dt className="font-display text-3xl text-gold font-semibold leading-none">{n}</dt>
+                <dd className="text-[11px] uppercase tracking-widest text-ivory/60 font-medium mt-1.5">{l}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
 
-        <div className="hidden lg:flex lg:col-span-5 flex-col gap-4 items-end justify-center">
-          {/* Hero product showcase removed */}
-          <dl className="grid grid-cols-3 gap-4 xl:gap-8 w-full pb-2 mt-2">
-            {[
-              ["6+", "Years"],
-              ["100+", "Boutiques"],
-              ["40+", "Cities"],
-            ].map(([n, l]) => (
-              <div key={l} className="border-t-2 border-white/40 pt-4">
-                <dt className="font-display text-3xl xl:text-4xl text-gold font-bold drop-shadow-lg">{n}</dt>
-                <dd className="text-[10px] xl:text-xs uppercase tracking-[0.2em] xl:tracking-[0.25em] text-white font-medium mt-1">{l}</dd>
+        {/* Desktop stats — right column, baseline-aligned */}
+        <div className="hidden lg:flex lg:col-span-5 flex-col justify-end pb-2">
+          <dl className="grid grid-cols-3 gap-x-6 xl:gap-x-10">
+            {STATS.map(([n, l]) => (
+              <div key={l} className="border-t border-ivory/25 pt-5">
+                <dt className="font-display text-3xl xl:text-4xl text-gold font-semibold leading-none">{n}</dt>
+                <dd className="text-[11px] uppercase tracking-widest text-ivory/60 font-medium mt-2">{l}</dd>
               </div>
             ))}
           </dl>
         </div>
       </div>
 
+      {/* Bottom scroll hint — editorial detail */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 hidden md:flex items-center gap-3 text-ivory/40 text-[10px] uppercase tracking-widest font-medium">
+        <span className="h-px w-8 bg-ivory/30" />
+        Scroll
+        <span className="h-px w-8 bg-ivory/30" />
+      </div>
     </section>
   );
 };

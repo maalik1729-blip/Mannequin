@@ -1,6 +1,12 @@
 import { Instagram, Facebook, Youtube, Mail, Phone, MapPin } from "lucide-react";
 import { Link } from "react-router-dom";
 
+const SOCIALS = [
+  { Icon: Instagram, href: "https://www.instagram.com/", label: "A K Enterprises on Instagram" },
+  { Icon: Facebook, href: "https://www.facebook.com/", label: "A K Enterprises on Facebook" },
+  { Icon: Youtube, href: "https://www.youtube.com/", label: "A K Enterprises on YouTube" },
+];
+
 const POLICIES = [
   { label: "Shipping Policy", href: "/shipping-policy" },
   { label: "Cancellation & Refund", href: "/cancellation-refund" },
@@ -19,11 +25,13 @@ export const Footer = () => {
             elevate every space they inhabit.
           </p>
           <div className="flex gap-3 mt-6">
-            {[Instagram, Facebook, Youtube].map((Icon, i) => (
+            {SOCIALS.map(({ Icon, href, label }) => (
               <a
-                key={i}
-                href="#"
-                aria-label="social"
+                key={label}
+                href={href}
+                aria-label={label}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-10 h-10 grid place-items-center rounded-full border border-white/30 text-white hover:bg-gold hover:text-obsidian hover:border-gold transition-smooth"
               >
                 <Icon size={16} />

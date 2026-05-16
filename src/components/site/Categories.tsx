@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import { Link } from "react-router-dom";
 import { PRODUCTS } from "@/data/products";
 
 // Derive unique categories from actual product data
@@ -44,25 +45,30 @@ const CATS = buildCategories();
 export const Categories = () => (
   <section className="py-16 md:py-24 lg:py-32 bg-background">
     <div className="container px-4">
-      <div className="flex items-end justify-between mb-14 reveal">
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14 reveal">
         <div>
-          <span className="text-xs uppercase tracking-[0.4em] text-gold font-semibold">Browse</span>
-          <h2 className="font-display text-4xl md:text-6xl mt-3 text-foreground font-semibold">By Category</h2>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="h-px w-8 bg-foreground/40" />
+            <span className="text-xs uppercase tracking-widest text-foreground/60 font-medium">Browse</span>
+          </div>
+          <h2 className="font-display text-5xl md:text-6xl text-foreground font-semibold leading-[0.95]">
+            By <em className="not-italic text-foreground/40">Category.</em>
+          </h2>
         </div>
-        <a
-          href="/#products"
-          className="hidden md:inline-flex items-center gap-2 text-sm uppercase tracking-[0.25em] text-foreground font-medium hover:text-gold transition-smooth"
+        <Link
+          to="/?category=All#products"
+          className="hidden md:inline-flex items-center gap-2 text-sm uppercase tracking-widest text-foreground font-medium hover:text-gold transition-smooth"
         >
           View all <ArrowUpRight size={16} />
-        </a>
+        </Link>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
         {CATS.map((c, i) => (
-          <a
+          <Link
             key={c.title}
-            href="/#products"
-            className="group relative aspect-[3/4] overflow-hidden bg-secondary reveal rounded-2xl shadow-soft hover:shadow-luxe transition-smooth"
+            to={`/?category=${encodeURIComponent(c.tag)}#products`}
+            className="group relative aspect-[3/4] overflow-hidden bg-secondary reveal transition-colors"
             style={{ transitionDelay: `${i * 80}ms` }}
           >
             <img
@@ -71,22 +77,25 @@ export const Categories = () => (
               loading="lazy"
               width={600}
               height={800}
-              className="absolute inset-0 w-full h-full object-cover transition-smooth group-hover:scale-110"
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.06]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-obsidian/90 via-obsidian/20 to-transparent" />
-            <div className="absolute bottom-0 inset-x-0 p-6 text-white">
-              <div className="text-xs uppercase tracking-[0.3em] text-gold font-medium">
+            <div className="absolute inset-0 bg-gradient-to-t from-obsidian/95 via-obsidian/30 to-transparent" />
+            <span className="absolute top-4 left-4 text-[11px] tracking-widest text-ivory/60 font-medium font-price">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <div className="absolute bottom-0 inset-x-0 p-5 md:p-6 text-ivory">
+              <div className="text-[11px] uppercase tracking-widest text-ivory/60 font-medium">
                 {c.count} {c.count === 1 ? "piece" : "pieces"}
               </div>
-              <div className="font-display text-2xl mt-1 flex items-center justify-between font-semibold">
-                {c.title}
+              <div className="font-display text-xl md:text-2xl mt-1.5 flex items-end justify-between gap-3 font-medium leading-tight">
+                <span>{c.title}</span>
                 <ArrowUpRight
-                  size={20}
-                  className="-translate-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-smooth"
+                  size={18}
+                  className="flex-shrink-0 mb-1 -translate-x-2 opacity-0 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
                 />
               </div>
             </div>
-          </a>
+          </Link>
         ))}
       </div>
     </div>

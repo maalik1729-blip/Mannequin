@@ -8,24 +8,38 @@ const CARDS = [
 ];
 
 export const Contact = () => (
-  <section id="contact" className="py-16 md:py-24 lg:py-32 bg-background">
+  <section id="contact" className="py-20 md:py-28 lg:py-32 bg-background">
     <div className="container px-4">
-      <div className="text-center max-w-xl mx-auto reveal">
-        <span className="text-xs uppercase tracking-[0.4em] text-gold font-semibold">Contact</span>
-        <h2 className="font-display text-4xl md:text-6xl mt-3 text-foreground font-semibold">Let's connect.</h2>
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-14 reveal">
+        <div>
+          <div className="flex items-center gap-3 mb-4">
+            <span className="h-px w-8 bg-foreground/40" />
+            <span className="text-xs uppercase tracking-widest text-foreground/60 font-medium">Contact</span>
+          </div>
+          <h2 className="font-display text-5xl md:text-6xl text-foreground font-semibold leading-[0.95]">
+            Let's <em className="not-italic text-foreground/40">connect.</em>
+          </h2>
+        </div>
+        <p className="text-foreground/60 max-w-xs md:text-right text-[15px] leading-relaxed">
+          Visit the atelier, call us, or write — we respond to every enquiry within a day.
+        </p>
       </div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mt-14">
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 border-t border-foreground/10">
         {CARDS.map(({ Icon, title, lines }, i) => (
           <div
             key={title}
-            className="border border-border p-6 md:p-8 hover-lift bg-card reveal"
+            className="border-b border-foreground/10 lg:border-b-0 lg:border-r last:border-r-0 [&:nth-child(2)]:lg:border-r p-7 md:p-8 reveal"
             style={{ transitionDelay: `${i * 80}ms` }}
           >
-            <div className="w-12 h-12 grid place-items-center bg-obsidian text-gold">
-              <Icon size={20} />
+            <div className="flex items-start justify-between mb-8">
+              <Icon size={20} strokeWidth={1.5} className="text-foreground/70" />
+              <span className="text-[11px] tracking-widest text-foreground/30 font-medium font-price">
+                {String(i + 1).padStart(2, "0")}
+              </span>
             </div>
-            <h3 className="font-display text-lg md:text-xl mt-6 text-foreground font-semibold">{title}</h3>
-            <div className="mt-2 text-sm text-foreground/90 space-y-1 font-medium">
+            <h3 className="font-display text-xl text-foreground font-medium">{title}</h3>
+            <div className="mt-2 text-sm text-foreground/60 space-y-1 leading-relaxed">
               {lines.map((l) => <div key={l}>{l}</div>)}
             </div>
           </div>

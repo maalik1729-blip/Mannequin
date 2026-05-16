@@ -1,4 +1,4 @@
-import { Send } from "lucide-react";
+import { Send, Clock, Package, Calendar } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import mandap from "@/assets/mandap-pillars.png";
@@ -22,50 +22,62 @@ export const Enquiry = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-obsidian via-obsidian/95 to-obsidian" />
       <div className="container relative grid lg:grid-cols-2 gap-12 md:gap-16 px-4">
         <div className="reveal">
-          <span className="text-xs uppercase tracking-[0.4em] text-gold font-semibold">Enquiry</span>
-          <h2 className="font-display text-3xl sm:text-4xl md:text-6xl mt-3 leading-tight text-white font-semibold">
-            Tell us what you're<br/> creating.
+          <div className="flex items-center gap-3 mb-4">
+            <span className="h-px w-8 bg-gold/80" />
+            <span className="text-xs uppercase tracking-widest text-gold/90 font-medium">Enquiry</span>
+          </div>
+          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl leading-[0.95] text-white font-semibold">
+            Tell us what<br/>
+            <em className="not-italic text-white/50">you're creating.</em>
           </h2>
-          <p className="text-white/90 mt-6 max-w-md text-sm md:text-base leading-relaxed font-medium">
+          <p className="text-white/70 mt-7 max-w-md text-[15px] leading-relaxed">
             Bulk orders, custom builds, wedding mandaps or studio pieces — share
             your vision and we'll respond with a tailored proposal.
           </p>
-          <dl className="mt-8 md:mt-10 space-y-4 md:space-y-5">
-            {[
-              ["Response time", "Within 24 hours"],
-              ["Minimum order", "1 piece (custom: 5+)"],
-              ["Lead time", "7 – 21 days"],
-            ].map(([k, v]) => (
-              <div key={k} className="flex justify-between border-b border-white/20 pb-3 max-w-sm text-sm md:text-base">
-                <dt className="text-[10px] md:text-xs uppercase tracking-[0.2em] md:tracking-[0.25em] text-white/70 font-medium">{k}</dt>
-                <dd className="text-xs md:text-sm text-gold font-semibold">{v}</dd>
+          <dl className="mt-8 md:mt-10 space-y-0 divide-y divide-white/15 max-w-sm">
+            {([
+              [Clock, "Response time", "Within 24 hours"],
+              [Package, "Minimum order", "1 piece (custom: 5+)"],
+              [Calendar, "Lead time", "7 – 21 days"],
+            ] as const).map(([Icon, k, v]) => (
+              <div key={k} className="flex items-center justify-between py-4">
+                <dt className="flex items-center gap-2 text-xs uppercase tracking-widest text-white/60 font-medium">
+                  <Icon size={14} className="text-gold flex-shrink-0" />{k}
+                </dt>
+                <dd className="text-sm text-gold font-semibold">{v}</dd>
               </div>
             ))}
           </dl>
         </div>
 
-        <form onSubmit={onSubmit} className="reveal bg-ivory/[0.03] border border-ivory/10 backdrop-blur p-6 md:p-8 lg:p-10 space-y-5">
+        <form onSubmit={onSubmit} className="reveal bg-ivory/[0.03] border border-ivory/10 backdrop-blur p-6 md:p-8 lg:p-10 space-y-5 rounded-2xl">
           <div className="grid sm:grid-cols-2 gap-5">
             <Field label="Full Name" name="name" required />
             <Field label="Phone" name="phone" type="tel" required />
           </div>
           <Field label="Email" name="email" type="email" required />
-          <div>
-            <label className="text-[10px] uppercase tracking-[0.3em] text-white/80 font-medium">Interested In</label>
-            <select name="interest" className="mt-2 w-full bg-transparent border-b border-white/30 py-3 text-sm text-white focus:border-gold outline-none transition-smooth">
-              {["Torso Busts", "Full Body Mannequins", "Kids Range", "Decor Statues", "Wedding Mandap", "Custom Build"].map(o => (
-                <option key={o} className="bg-obsidian">{o}</option>
-              ))}
-            </select>
+          <div className="grid sm:grid-cols-2 gap-5">
+            <div>
+              <label className="text-xs uppercase tracking-widest text-white/60 font-medium block mb-1.5">Interested In</label>
+              <select name="interest" className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-sm text-white focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none transition-smooth">
+                {["Torso Busts", "Full Body Mannequins", "Kids Range", "Decor Statues", "Wedding Mandap", "Custom Build"].map(o => (
+                  <option key={o} className="bg-obsidian">{o}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="text-xs uppercase tracking-widest text-white/60 font-medium block mb-1.5">Quantity Required</label>
+              <input name="quantity" type="number" min="1" placeholder="e.g. 5" className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-sm text-white focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none transition-smooth placeholder:text-white/30" />
+            </div>
           </div>
           <div>
-            <label className="text-[10px] uppercase tracking-[0.3em] text-white/80 font-medium">Message</label>
-            <textarea name="message" rows={4} className="mt-2 w-full bg-transparent border-b border-white/30 py-3 text-sm text-white focus:border-gold outline-none transition-smooth resize-none" placeholder="Tell us about quantity, finish, timeline…" />
+            <label className="text-xs uppercase tracking-widest text-white/60 font-medium block mb-1.5">Message</label>
+            <textarea name="message" rows={4} className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-sm text-white focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none transition-smooth resize-none placeholder:text-white/30" placeholder="Tell us about finish, timeline, or any custom requirements…" />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full inline-flex items-center justify-center gap-3 bg-gold text-obsidian px-6 md:px-7 py-3 md:py-4 text-xs uppercase tracking-[0.25em] md:tracking-[0.3em] font-bold rounded-full hover:bg-white transition-smooth disabled:opacity-60 shadow-lg"
+            className="w-full inline-flex items-center justify-center gap-3 bg-gold text-obsidian px-7 py-4 text-sm uppercase tracking-widest font-bold rounded-full hover:bg-white transition-smooth disabled:opacity-60 shadow-lg"
           >
             {loading ? "Sending…" : "Send Enquiry"} <Send size={14} />
           </button>
@@ -77,10 +89,10 @@ export const Enquiry = () => {
 
 const Field = ({ label, ...props }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) => (
   <div>
-    <label className="text-[10px] uppercase tracking-[0.3em] text-white/80 font-medium">{label}</label>
+    <label className="text-xs uppercase tracking-widest text-white/60 font-medium block mb-1.5">{label}{props.required && <span className="text-red-400 ml-0.5">*</span>}</label>
     <input
       {...props}
-      className="mt-2 w-full bg-transparent border-b border-white/30 py-3 text-sm text-white focus:border-gold outline-none transition-smooth"
+      className="w-full bg-white/10 border border-white/20 rounded-lg px-4 py-3 text-sm text-white focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none transition-smooth placeholder:text-white/30"
     />
   </div>
 );

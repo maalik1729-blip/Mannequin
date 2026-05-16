@@ -5,19 +5,27 @@ import { isProductInStock } from "@/data/products";
 import { useCurrency } from "@/context/CurrencyContext";
 
 export default function CartDrawer() {
-  const { items, cartOpen, setCartOpen, removeFromCart, updateQty, totalItems } = useCart();
+  const { items, cartOpen, setCartOpen, removeFromCart, updateQty, totalItems, cartTotal } = useCart();
   const { format } = useCurrency();
   const navigate = useNavigate();
 
   if (!cartOpen) return null;
 
   const hasOutOfStockItems = items.some((item) => !isProductInStock(item.id));
+  const inStockItems = items.filter((item) => isProductInStock(item.id));
 
   const handleCheckout = () => {
-    if (items.length === 0 || hasOutOfStockItems) return;
+    if (items.length === 0) return;
     setCartOpen(false);
-    // Navigate to checkout with the first item for now (can be extended)
-    navigate(`/checkout/${items[0].id}`);
+    navigate("/checkout");
+  };
+
+  const handleRemoveOOSAndCheckout = () => {
+    items
+      .filter((item) => !isProductInStock(item.id))
+      .forEach((item) => removeFromCart(item.id));
+    setCartOpen(false);
+    navigate("/checkout");
   };
 
   return (
@@ -118,28 +126,43 @@ export default function CartDrawer() {
           <div className="px-6 py-5 border-t border-border space-y-4 bg-background">
             <div className="flex justify-between text-sm text-foreground/70">
               <span>{totalItems} item{totalItems !== 1 ? "s" : ""}</span>
-              <span className="text-xs">Shipping calculated at checkout</span>
+              <span className="text-xs">Shipping at checkout</span>
             </div>
-            
+
+            <div className="flex justify-between items-baseline">
+              <span className="font-display text-base font-semibold">Total</span>
+              <span className="font-price text-lg font-bold">{format(cartTotal)}</span>
+            </div>
+
             {hasOutOfStockItems && (
-              <div className="flex items-start gap-2 bg-red-500/10 text-red-600 text-xs p-3 rounded-sm border border-red-500/20">
+              <div className="flex items-start gap-2 bg-red-500/10 text-red-600 text-xs p-3 rounded-lg border border-red-500/20">
                 <AlertTriangle size={14} className="flex-shrink-0 mt-0.5" />
-                <p>Please remove out of stock items from your cart to proceed with checkout.</p>
+                <p>{inStockItems.length > 0 ? "Some items are out of stock." : "All items are out of stock."}</p>
               </div>
             )}
-            
-            <button
-              onClick={handleCheckout}
-              disabled={hasOutOfStockItems}
-              className={`w-full py-4 uppercase tracking-[0.2em] text-sm font-bold rounded-full transition-smooth flex justify-center items-center gap-2 ${
-                hasOutOfStockItems
-                  ? 'bg-muted text-foreground/40 cursor-not-allowed border border-border'
-                  : 'bg-obsidian text-white hover:bg-gold hover:text-obsidian'
-              }`}
-            >
-              {hasOutOfStockItems ? <Lock size={16} /> : <ShoppingBag size={16} />}
-              Proceed to Checkout
-            </button>
+
+            {hasOutOfStockItems && inStockItems.length > 0 ? (
+              <button
+                onClick={handleRemoveOOSAndCheckout}
+                className="w-full py-4 uppercase tracking-widest text-sm font-bold rounded-full transition-smooth flex justify-center items-center gap-2 bg-obsidian text-white hover:bg-gold hover:text-obsidian"
+              >
+                <ShoppingBag size={16} />
+                Remove OOS &amp; Checkout
+              </button>
+            ) : (
+              <button
+                onClick={handleCheckout}
+                disabled={hasOutOfStockItems}
+                className={`w-full py-4 uppercase tracking-widest text-sm font-bold rounded-full transition-smooth flex justify-center items-center gap-2 ${
+                  hasOutOfStockItems
+                    ? 'bg-muted text-foreground/40 cursor-not-allowed border border-border'
+                    : 'bg-obsidian text-white hover:bg-gold hover:text-obsidian'
+                }`}
+              >
+                {hasOutOfStockItems ? <Lock size={16} /> : <ShoppingBag size={16} />}
+                Proceed to Checkout
+              </button>
+            )}
             <button
               onClick={() => setCartOpen(false)}
               className="w-full text-xs uppercase tracking-widest text-foreground/60 hover:text-foreground transition-smooth py-1"

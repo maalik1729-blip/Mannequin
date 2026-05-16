@@ -1,77 +1,167 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Heart, Lock, ArrowRight } from "lucide-react";
-import { PRODUCTS, isProductInStock } from "@/data/products";
+import { useState, useEffect } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { Heart, Plus } from "lucide-react";
+import { PRODUCTS, FILTERS, isProductInStock } from "@/data/products";
 import { useWishlist } from "@/context/WishlistContext";
+import { useCart } from "@/context/CartContext";
 import { useCurrency } from "@/context/CurrencyContext";
 import CurrencyToggle from "@/components/site/CurrencyToggle";
 
 export const Products = () => {
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const { addToCart } = useCart();
   const { format } = useCurrency();
-  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const [activeFilter, setActiveFilter] = useState(() => {
+    const cat = searchParams.get("category");
+    return cat && FILTERS.includes(cat) ? cat : "All";
+  });
+
+  useEffect(() => {
+    const cat = searchParams.get("category");
+    if (cat && FILTERS.includes(cat)) {
+      setActiveFilter(cat);
+      setTimeout(() => {
+        document.getElementById("products")?.scrollIntoView({ behavior: "smooth" });
+      }, 100);
+    }
+  }, [searchParams]);
+
+  const displayed = activeFilter === "All"
+    ? [...PRODUCTS].reverse()
+    : PRODUCTS.filter((p) => p.tag === activeFilter);
 
   return (
-    <section id="products" className="py-16 md:py-24 lg:py-32 bg-secondary/40">
+    <section id="products" className="py-20 md:py-28 lg:py-36 bg-background">
       <div className="container px-4">
-        <div className="text-center max-w-2xl mx-auto reveal">
-          <span className="text-xs uppercase tracking-[0.4em] text-gold font-semibold">The Collection</span>
-          <h2 className="font-display text-4xl md:text-6xl mt-3 text-foreground font-semibold">Torso Busts &amp; Beyond</h2>
-          <p className="text-foreground/90 mt-5 font-medium">
-            Each piece is hand-finished in our atelier — built for visual
-            merchandising, weddings, photography and brand storytelling.
+        {/* Editorial section header — magazine style */}
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16 reveal">
+          <div className="max-w-xl">
+            <div className="flex items-center gap-3 mb-4">
+              <span className="h-px w-8 bg-foreground/40" />
+              <span className="text-xs uppercase tracking-widest text-foreground/60 font-medium">The Collection · {String(displayed.length).padStart(2, "0")}</span>
+            </div>
+            <h2 className="font-display text-5xl md:text-6xl text-foreground font-semibold leading-[0.95]">
+              Torso Busts<br/>
+              <em className="not-italic text-foreground/40">&amp; Beyond.</em>
+            </h2>
+          </div>
+          <p className="text-foreground/70 max-w-sm md:text-right text-[15px] leading-relaxed">
+            Each piece is hand-finished in our atelier — built for visual merchandising, weddings, photography and brand storytelling.
           </p>
         </div>
 
-        {/* Currency toggle */}
-        <div className="flex justify-end mt-10 reveal px-4">
+        {/* Filter row — editorial */}
+        <div className="flex flex-wrap items-center justify-between gap-4 mb-10 reveal pb-5 border-b border-foreground/10">
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            {FILTERS.map((filter) => (
+              <button
+                key={filter}
+                onClick={() => setActiveFilter(filter)}
+                className={`text-xs uppercase tracking-widest font-medium transition-colors py-1 ${
+                  activeFilter === filter
+                    ? "text-foreground border-b border-foreground"
+                    : "text-foreground/40 hover:text-foreground/80"
+                }`}
+              >
+                {filter}
+              </button>
+            ))}
+          </div>
           <CurrencyToggle />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-14">
-          {[...PRODUCTS].reverse().map((p, i) => {
-            const displayPrice = format(p.priceINR) + (p.priceSuffix ? ` ${p.priceSuffix}` : "");
-            return (
-              <Link
-                to={`/product/${p.id}`}
-                key={p.id}
-                className="group bg-background reveal hover-lift block product-card border border-border/40"
-                style={{ transitionDelay: `${(i % 4) * 80}ms` }}
-              >
-                <div className="relative aspect-square overflow-hidden bg-muted rounded-t-2xl">
-                  <img
-                    src={p.img}
-                    alt={p.name}
-                    loading="lazy"
-                    width={600}
-                    height={750}
-                    className="absolute inset-0 w-full h-full object-contain transition-smooth group-hover:scale-105"
-                  />
-                  <button
-                    aria-label="wishlist"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      toggleWishlist(p);
-                    }}
-                    className={`absolute top-3 right-3 w-10 h-10 grid place-items-center rounded-full bg-background/85 backdrop-blur shadow-sm transition-smooth z-10 ${isInWishlist(p.id) ? "text-red-500 hover:bg-background" : "hover:bg-gold hover:text-obsidian"
-                      }`}
-                  >
-                    <Heart size={16} className={isInWishlist(p.id) ? "fill-red-500" : ""} />
-                  </button>
-                  <div className="absolute inset-x-3 bottom-3 translate-y-3 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-smooth">
-                    <span className="flex items-center justify-center gap-2 w-full bg-obsidian text-white py-3 text-center text-xs uppercase tracking-[0.25em] rounded-full hover:bg-gold hover:text-obsidian transition-smooth">
-                      Buy Now <ArrowRight size={14} />
+        {displayed.length === 0 ? (
+          <div className="text-center py-20 text-foreground/40">
+            <p className="font-display text-2xl">No pieces in this category yet.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-x-5 gap-y-12 md:gap-y-16">
+            {displayed.map((p, i) => {
+              const displayPrice = format(p.priceINR) + (p.priceSuffix ? ` ${p.priceSuffix}` : "");
+              const inStock = isProductInStock(p.id);
+              const idx = String(i + 1).padStart(2, "0");
+              return (
+                <Link
+                  to={`/product/${p.id}`}
+                  key={p.id}
+                  className="group block reveal"
+                  style={{ transitionDelay: `${(i % 4) * 60}ms` }}
+                >
+                  {/* Image — no card border, no rounded corners, gallery feel */}
+                  <div className="relative aspect-[4/5] overflow-hidden bg-[hsl(28_25%_94%)]">
+                    <img
+                      src={p.img}
+                      alt={p.name}
+                      loading="lazy"
+                      width={600}
+                      height={750}
+                      className="absolute inset-0 w-full h-full object-contain p-6 transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                    />
+
+                    {/* Index number — top-left, editorial detail */}
+                    <span className="absolute top-3 left-3 text-[11px] tracking-widest text-foreground/40 font-medium font-price">
+                      {idx}
                     </span>
+
+                    {/* Wishlist — minimal, monochrome */}
+                    <button
+                      aria-label={`${isInWishlist(p.id) ? "Remove from" : "Add to"} wishlist: ${p.name}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        toggleWishlist(p);
+                      }}
+                      className={`absolute top-3 right-3 w-8 h-8 grid place-items-center transition-colors ${
+                        isInWishlist(p.id)
+                          ? "text-red-500"
+                          : "text-foreground/40 hover:text-foreground"
+                      }`}
+                    >
+                      <Heart size={15} className={isInWishlist(p.id) ? "fill-red-500" : ""} strokeWidth={1.5} />
+                    </button>
+
+                    {/* OOS badge — bottom-left, only when out of stock */}
+                    {!inStock && (
+                      <span className="absolute bottom-3 left-3 text-[10px] uppercase tracking-widest font-medium text-foreground/60 bg-background/80 backdrop-blur px-2 py-1">
+                        Sold Out
+                      </span>
+                    )}
                   </div>
-                </div>
-                <div className="p-5">
-                  <div className="text-[10px] uppercase tracking-[0.3em] text-gold font-semibold">{p.tag}</div>
-                  <h3 className="font-display text-xl mt-1 text-foreground font-semibold">{p.name}</h3>
-                  <div className="mt-2 text-sm text-foreground font-bold font-price">{displayPrice}</div>
-                </div>
-              </Link>
-            )
-          })}
-        </div>
+
+                  {/* Meta — minimal text below image */}
+                  <div className="mt-4 flex items-start justify-between gap-3">
+                    <div className="min-w-0 flex-1">
+                      <p className="text-[10px] uppercase tracking-[0.2em] text-foreground/40 font-medium">
+                        {p.tag}
+                      </p>
+                      <h3 className="font-display text-lg md:text-xl mt-1 text-foreground font-medium leading-snug truncate">
+                        {p.name}
+                      </h3>
+                      <p className="mt-1.5 text-sm font-price font-semibold text-foreground">
+                        {displayPrice}
+                      </p>
+                    </div>
+
+                    {/* Add to cart — minimal plus icon, only on hover, only if in stock */}
+                    {inStock && (
+                      <button
+                        aria-label={`Add ${p.name} to cart`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          addToCart(p);
+                        }}
+                        className="flex-shrink-0 w-8 h-8 grid place-items-center border border-foreground/20 hover:bg-foreground hover:text-background hover:border-foreground transition-colors"
+                      >
+                        <Plus size={14} strokeWidth={1.5} />
+                      </button>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

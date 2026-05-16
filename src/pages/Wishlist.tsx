@@ -42,7 +42,7 @@ export default function Wishlist() {
             <div className="text-center py-20 bg-muted/30 border border-border rounded-2xl">
               <Heart className="w-16 h-16 text-foreground/20 mx-auto mb-4" />
               <h2 className="text-2xl font-display mb-2">Your wishlist is empty</h2>
-              <p className="text-foreground/60 mb-8">Save items you love to build your perfect collection.</p>
+              <p className="text-foreground/60 mb-8">Add mannequins, decor, or mandaps you're considering — we'll keep them here for you.</p>
               <Link to="/#products" className="inline-block bg-obsidian text-white px-8 py-3 uppercase tracking-widest text-sm rounded-full hover:bg-gold hover:text-obsidian transition-smooth">
                 Explore Products
               </Link>
@@ -60,21 +60,21 @@ export default function Wishlist() {
                     />
                     {!isProductInStock(p.id) && (
                       <div className="absolute inset-0 flex items-center justify-center bg-background/20 backdrop-blur-[2px]">
-                        <span className="bg-obsidian text-white px-3 py-1.5 text-[10px] uppercase tracking-widest font-semibold flex items-center gap-1.5 shadow-xl">
+                        <span className="bg-obsidian text-white px-3 py-1.5 text-xs uppercase tracking-widest font-semibold flex items-center gap-1.5 shadow-xl rounded-full">
                           <Lock size={10} /> Out of Stock
                         </span>
                       </div>
                     )}
                   </Link>
                   <button
-                    aria-label="Remove from wishlist"
+                    aria-label={`Remove ${p.name} from wishlist`}
                     className="absolute top-3 right-3 w-10 h-10 grid place-items-center rounded-full bg-background/90 backdrop-blur shadow-sm text-red-500 hover:bg-red-500 hover:text-white transition-smooth z-10"
                     onClick={() => toggleWishlist(p)}
                   >
                     <Trash2 size={16} />
                   </button>
                   <div className="p-4 flex flex-col flex-1">
-                    <div className="text-[10px] uppercase tracking-[0.3em] text-gold font-semibold">{p.tag}</div>
+                    <div className="text-xs uppercase tracking-widest text-foreground/50 font-semibold">{p.tag}</div>
                     <Link to={`/product/${p.id}`}>
                       <h3 className="font-display text-lg mt-1 text-foreground font-semibold hover:text-gold transition-smooth line-clamp-1">{p.name}</h3>
                     </Link>
