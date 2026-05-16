@@ -64,8 +64,8 @@ export default function ProductDetails() {
           </Link>
 
           <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-start">
-            <div className="bg-muted relative aspect-square overflow-hidden rounded-2xl shadow-soft">
-              <img src={product.img} alt={product.name} className="absolute inset-0 w-full h-full object-contain" />
+            <div className="product-frame relative aspect-square overflow-hidden">
+              <img src={product.img} alt={product.name} className="absolute inset-0 w-full h-full object-contain p-6" />
             </div>
 
             <div className="flex flex-col pt-4 md:pt-10">
@@ -185,14 +185,14 @@ export default function ProductDetails() {
                 <Link
                   to={`/product/${p.id}`}
                   key={p.id}
-                  className="group bg-background block hover-lift product-card border border-border/40"
+                  className="group block"
                 >
-                  <div className="relative aspect-square overflow-hidden bg-muted rounded-t-2xl">
+                  <div className="product-frame relative aspect-square overflow-hidden">
                     <img
                       src={p.img}
                       alt={p.name}
                       loading="lazy"
-                      className="absolute inset-0 w-full h-full object-contain transition-smooth group-hover:scale-105"
+                      className="absolute inset-0 w-full h-full object-contain p-4 transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                     />
                     <button
                       aria-label={`${isInWishlist(p.id) ? 'Remove from' : 'Add to'} wishlist: ${p.name}`}

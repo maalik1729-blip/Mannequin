@@ -86,18 +86,17 @@ export const Products = () => {
                 <Link
                   to={`/product/${p.id}`}
                   key={p.id}
-                  className="group block reveal"
-                  style={{ transitionDelay: `${(i % 4) * 60}ms` }}
+                  className="group block"
                 >
-                  {/* Image — no card border, no rounded corners, gallery feel */}
-                  <div className="relative aspect-[4/5] overflow-hidden bg-[hsl(28_25%_94%)]">
+                  {/* Image — gallery frame: ambient gradient, vignette, floor shadow, grain */}
+                  <div className="relative aspect-[4/5] overflow-hidden product-frame">
                     <img
                       src={p.img}
                       alt={p.name}
                       loading="lazy"
                       width={600}
                       height={750}
-                      className="absolute inset-0 w-full h-full object-contain p-6 transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                      className="absolute inset-0 w-full h-full object-contain p-4 md:p-5 transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                     />
 
                     {/* Index number — top-left, editorial detail */}

@@ -51,12 +51,12 @@ export default function Wishlist() {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {items.map((p) => (
                 <div key={p.id} className="group bg-background border border-border/40 hover-lift relative flex flex-col product-card">
-                  <Link to={`/product/${p.id}`} className="block relative aspect-square overflow-hidden bg-muted rounded-t-2xl">
+                  <Link to={`/product/${p.id}`} className="block product-frame relative aspect-square overflow-hidden">
                     <img
                       src={p.img}
                       alt={p.name}
                       loading="lazy"
-                      className={`absolute inset-0 w-full h-full object-contain transition-smooth group-hover:scale-105 ${!isProductInStock(p.id) ? 'opacity-50 grayscale' : ''}`}
+                      className={`absolute inset-0 w-full h-full object-contain p-4 transition-transform duration-700 ease-out group-hover:scale-[1.04] ${!isProductInStock(p.id) ? 'opacity-50 grayscale' : ''}`}
                     />
                     {!isProductInStock(p.id) && (
                       <div className="absolute inset-0 flex items-center justify-center bg-background/20 backdrop-blur-[2px]">
