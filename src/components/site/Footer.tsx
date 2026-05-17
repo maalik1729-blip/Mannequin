@@ -84,7 +84,7 @@ export const Footer = () => {
       <div className="border-t border-white/20">
         <div className="container py-6 flex flex-col md:flex-row justify-between gap-3 text-xs text-white/70">
           <span>© {new Date().getFullYear()} A K Enterprises. All rights reserved.</span>
-          <span>Designed with intention · Owner: Vadivel S</span>
+          <span className="text-white/40">Crafted with intention · Chennai, India</span>
         </div>
       </div>
     </footer>

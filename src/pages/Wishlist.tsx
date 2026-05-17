@@ -1,7 +1,7 @@
 import Header from "@/components/site/Header";
 import Footer from "@/components/site/Footer";
 import { useWishlist } from "@/context/WishlistContext";
-import { Heart, Trash2, ArrowLeft, Lock } from "lucide-react";
+import { Heart, Trash2, ArrowLeft, Lock, ChevronRight } from "lucide-react";
 import { useLenis, useReveal } from "@/hooks/useLenis";
 import { useEffect } from "react";
 import { isProductInStock } from "@/data/products";
@@ -23,6 +23,13 @@ export default function Wishlist() {
       <Header />
       <div className="flex-1 pt-32 pb-24">
         <div className="container px-4 max-w-6xl mx-auto reveal">
+          {/* Breadcrumb */}
+          <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs uppercase tracking-wider text-foreground/50 font-medium mb-8">
+            <Link to="/" className="hover:text-foreground transition-smooth">Home</Link>
+            <ChevronRight size={12} />
+            <span className="text-foreground/80">Wishlist</span>
+          </nav>
+
           <Link to="/#products" className="inline-flex items-center text-sm uppercase tracking-widest text-foreground/70 hover:text-foreground transition-smooth mb-10">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Continue Shopping

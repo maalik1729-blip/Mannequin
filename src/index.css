@@ -170,6 +170,8 @@ All colors MUST be HSL.
       outline-none transition-colors
       focus:border-gold focus:ring-1 focus:ring-gold/30;
   }
+  textarea.field-input { @apply resize-none; }
+  select.field-input { @apply cursor-pointer; }
   .field-label {
     @apply block text-xs uppercase tracking-widest text-foreground/70 font-medium mb-1.5;
   }
@@ -221,11 +223,13 @@ All colors MUST be HSL.
   .bg-gold { background-color: hsl(var(--gold)); }
   .bg-obsidian { background-color: hsl(var(--obsidian)); }
   .bg-ivory { background-color: hsl(var(--ivory)); }
+  .text-obsidian { color: hsl(var(--obsidian)); }
+  .text-ivory { color: hsl(var(--ivory)); }
   .bg-gradient-gold { background-image: var(--gradient-gold); }
   .bg-gradient-dark { background-image: var(--gradient-dark); }
   .shadow-luxe { box-shadow: var(--shadow-luxe); }
   .shadow-soft { box-shadow: var(--shadow-soft); }
-  .transition-smooth { transition: all 0.6s var(--transition-smooth); }
+  .transition-smooth { transition: color 0.4s var(--transition-smooth), background-color 0.4s var(--transition-smooth), border-color 0.4s var(--transition-smooth), opacity 0.4s var(--transition-smooth), transform 0.4s var(--transition-smooth), box-shadow 0.4s var(--transition-smooth); }
   .reveal { opacity: 0; transform: translateY(30px); transition: opacity 1s var(--transition-smooth), transform 1s var(--transition-smooth); }
   .reveal.in { opacity: 1; transform: none; }
   .hover-lift { transition: transform 0.6s var(--transition-smooth), box-shadow 0.6s var(--transition-smooth); }
@@ -234,6 +238,9 @@ All colors MUST be HSL.
   .product-card:hover { box-shadow: var(--shadow-luxe); }
   .text-balance { text-wrap: balance; }
   .marquee-track { animation: marquee 40s linear infinite; }
+  /* Hide scrollbar for filter pill row on mobile */
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
   @keyframes marquee {
     from { transform: translateX(0); }
     to { transform: translateX(-50%); }

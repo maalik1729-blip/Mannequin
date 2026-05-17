@@ -93,6 +93,7 @@ export const Header = () => {
           : "bg-transparent"
       }`}
     >
+      {/* Announcement bar — desktop only */}
       <div className="hidden md:block bg-obsidian/80 text-gold text-xs border-b border-gold/20 relative z-10">
         <div className="container flex justify-between py-2.5">
           <span className="tracking-widest uppercase font-medium">Crafted in India · Worldwide Shipping</span>
@@ -107,6 +108,7 @@ export const Header = () => {
       <div className="container flex items-center justify-between h-16 md:h-20 relative z-10 gap-4">
         <Logo textColor={textColor} />
 
+        {/* Desktop nav */}
         <nav className="hidden lg:flex items-center gap-6 xl:gap-10">
           {NAV.map((n) => (
             <a
@@ -121,7 +123,7 @@ export const Header = () => {
         </nav>
 
         <div className="flex items-center gap-1 md:gap-2 flex-shrink-0">
-          {/* Inline search bar — desktop */}
+          {/* Desktop inline search bar */}
           {searchOpen ? (
             <div className={`relative hidden sm:flex items-center gap-2 ${isDarkText ? 'bg-obsidian/5' : 'bg-white/10'} px-3 py-1.5 rounded-full`}>
               <Search size={15} className="text-gold flex-shrink-0" />
@@ -130,13 +132,19 @@ export const Header = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search products..."
+                aria-label="Search products"
                 className={`bg-transparent ${textColor} text-sm outline-none ${isDarkText ? 'placeholder:text-obsidian/40' : 'placeholder:text-white/40'} w-36 sm:w-44 lg:w-56`}
               />
               <button onClick={() => setSearchOpen(false)} aria-label="Close search" className={`${isDarkText ? 'text-obsidian/60 hover:text-obsidian' : 'text-white/60 hover:text-white'} transition-smooth ml-1 rounded-full`}>
                 <X size={15} />
               </button>
               {query.trim().length > 1 && (
-                <div role="listbox" aria-label="Search results" className="absolute top-full left-0 right-0 mt-2 bg-obsidian border border-gold/20 shadow-luxe z-[200] max-h-80 overflow-y-auto min-w-[300px]">
+                <div
+                  role="listbox"
+                  aria-label="Search results"
+                  aria-live="polite"
+                  className="absolute top-full left-0 right-0 mt-2 bg-obsidian border border-gold/20 shadow-luxe z-[200] max-h-80 overflow-y-auto min-w-[300px]"
+                >
                   {filtered.length > 0 ? (
                     <ul>
                       {filtered.map((p) => (
@@ -166,13 +174,13 @@ export const Header = () => {
             <button
               aria-label="Open search"
               onClick={() => setSearchOpen(true)}
-              className={`p-2.5 rounded-full ${textColor} hover:text-gold ${hoverBgClass} transition-smooth hidden sm:block`}
+              className={`p-2.5 rounded-full ${textColor} hover:text-gold ${hoverBgClass} transition-smooth`}
             >
               <Search size={18} />
             </button>
           )}
 
-          {/* Wishlist — desktop only; mobile is in drawer */}
+          {/* Wishlist — desktop only */}
           <a
             href="/wishlist"
             aria-label={`Wishlist${totalWishlist > 0 ? `, ${totalWishlist} items` : ""}`}
@@ -186,7 +194,7 @@ export const Header = () => {
             )}
           </a>
 
-          {/* Cart — always visible */}
+          {/* Cart — always visible on all breakpoints */}
           <button
             aria-label={`Cart${totalItems > 0 ? `, ${totalItems} items` : ""}`}
             onClick={() => setCartOpen(true)}
@@ -226,7 +234,7 @@ export const Header = () => {
       <div className="lg:hidden">
         {/* Backdrop */}
         <div
-          className="fixed inset-0 z-[250] bg-obsidian/60 backdrop-blur-sm"
+          className="fixed inset-0 z-[250] bg-obsidian/70 backdrop-blur-sm"
           onClick={() => setOpen(false)}
           aria-hidden="true"
         />
@@ -269,16 +277,17 @@ export const Header = () => {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search products…"
+                aria-label="Search products"
                 className="bg-transparent text-white text-sm outline-none placeholder:text-white/40 w-full"
               />
               {query && (
-                <button onClick={() => setQuery("")} className="text-white/40 hover:text-white transition-smooth">
+                <button onClick={() => setQuery("")} aria-label="Clear search" className="text-white/40 hover:text-white transition-smooth">
                   <X size={13} />
                 </button>
               )}
             </div>
             {query.trim().length > 1 && (
-              <div className="mt-2 max-h-44 overflow-y-auto space-y-0.5" aria-live="polite">
+              <div className="mt-2 max-h-44 overflow-y-auto space-y-0.5" aria-live="polite" role="listbox" aria-label="Search results">
                 {filtered.length > 0 ? filtered.map((p) => (
                   <a
                     key={p.id}
@@ -328,7 +337,7 @@ export const Header = () => {
             >
               Get a Quote
             </a>
-            <div className="space-y-1 text-xs text-white/50">
+            <div className="space-y-1.5 text-xs text-white/50">
               <a href="tel:+919884195244" className="block hover:text-gold transition-smooth">+91 98841 95244</a>
               <a href="mailto:akenterprisesbus26@gmail.com" className="block hover:text-gold transition-smooth truncate">akenterprisesbus26@gmail.com</a>
             </div>

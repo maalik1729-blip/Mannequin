@@ -85,7 +85,6 @@ export const FILTERS = [
   "Adjustable Form",
   "Full Body",
   "Full Body Male",
-  "Kids Range",
   "Decor Statue",
   "Mandap",
   "Accent Decor",

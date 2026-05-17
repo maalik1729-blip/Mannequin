@@ -58,13 +58,18 @@ export default function CartDrawer() {
         <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
           {items.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full text-center gap-4 text-foreground/50">
-              <ShoppingBag size={48} className="opacity-30" />
-              <p className="font-display text-xl">Your cart is empty</p>
+              <ShoppingBag size={48} className="opacity-20" />
+              <div>
+                <p className="font-display text-xl text-foreground/70">Your cart is empty</p>
+                <p className="text-sm text-foreground/50 mt-1.5 max-w-[200px] mx-auto">
+                  Browse the collection and add pieces you love.
+                </p>
+              </div>
               <button
                 onClick={() => setCartOpen(false)}
-                className="text-xs uppercase tracking-widest border-b border-gold text-gold pb-0.5 hover:text-foreground transition-smooth"
+                className="btn-secondary px-5 py-2.5 text-xs"
               >
-                Continue Shopping
+                Explore Products
               </button>
             </div>
           ) : (
@@ -94,22 +99,25 @@ export default function CartDrawer() {
                     <div className="flex items-center border border-border rounded-full overflow-hidden">
                       <button
                         onClick={() => updateQty(item.id, item.quantity - 1)}
-                        className="w-8 h-8 flex items-center justify-center hover:bg-muted transition-smooth"
+                        aria-label="Decrease quantity"
+                        className="w-10 h-10 flex items-center justify-center hover:bg-muted transition-smooth"
                       >
-                        <Minus size={12} />
+                        <Minus size={13} />
                       </button>
-                      <span className="w-8 text-center text-sm font-medium">{item.quantity}</span>
+                      <span className="w-8 text-center text-sm font-medium" aria-live="polite">{item.quantity}</span>
                       <button
-                        onClick={() => updateQty(item.id, item.quantity + 1)}
+                        onClick={() => updateQty(item.id, Math.min(99, item.quantity + 1))}
                         disabled={!inStock}
-                        className={`w-8 h-8 flex items-center justify-center transition-smooth ${!inStock ? 'cursor-not-allowed opacity-50' : 'hover:bg-muted'}`}
+                        aria-label="Increase quantity"
+                        className={`w-10 h-10 flex items-center justify-center transition-smooth ${!inStock ? 'cursor-not-allowed opacity-50' : 'hover:bg-muted'}`}
                       >
-                        <Plus size={12} />
+                        <Plus size={13} />
                       </button>
                     </div>
                     <button
                       onClick={() => removeFromCart(item.id)}
-                      className="text-foreground/40 hover:text-red-500 transition-smooth ml-auto"
+                      aria-label={`Remove ${item.name} from cart`}
+                      className="p-2 text-foreground/40 hover:text-red-500 transition-smooth ml-auto rounded-full hover:bg-red-50"
                     >
                       <Trash2 size={15} />
                     </button>
