@@ -8,103 +8,99 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Smooth Atelier — warm linen + espresso + bronze accent
-       All hues live in 25–36°; saturations 12–38% for a tonal, smooth feel. */
-    --background: 36 28% 96%;
-    --foreground: 25 14% 16%;
+    /* Monochromatic Couture — Alabaster White + Matte Onyx Black + Brushed Platinum Accent
+       Strips all warm gold/linen tones for a cool, sleek, high-fashion editorial look. */
+    --background: 0 0% 98%;
+    --foreground: 0 0% 10%;
 
-    --card: 36 32% 98%;
-    --card-foreground: 25 14% 16%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
 
-    --popover: 36 32% 98%;
-    --popover-foreground: 25 14% 16%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 25 16% 18%;
-    --primary-foreground: 36 28% 96%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 32 20% 92%;
-    --secondary-foreground: 25 14% 16%;
+    --secondary: 0 0% 93%;
+    --secondary-foreground: 0 0% 10%;
 
-    --muted: 32 16% 90%;
-    --muted-foreground: 25 8% 42%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 32 35% 52%;
-    --accent-foreground: 36 28% 96%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
 
-    --gold: 32 35% 52%;
-    --gold-soft: 32 45% 86%;
-    --obsidian: 25 16% 14%;
-    --ivory: 36 28% 96%;
+    --gold: 0 0% 90%; /* Premium Platinum Silver for high-contrast buttons & tags */
+    --gold-soft: 0 0% 94%; /* Crisp off-white/light gray */
+    --obsidian: 0 0% 8%; /* Pure Onyx Black */
+    --ivory: 0 0% 98%; /* Alabaster White */
 
-    --gradient-gold: linear-gradient(135deg, hsl(38 45% 68%), hsl(28 32% 46%));
-    --gradient-dark: linear-gradient(180deg, hsl(25 16% 14%), hsl(28 14% 22%));
-    --gradient-fade: linear-gradient(180deg, hsl(36 28% 96% / 0), hsl(36 28% 96% / 1));
-    --shadow-luxe: 0 30px 80px -20px hsl(25 16% 14% / 0.22);
-    --shadow-soft: 0 10px 40px -10px hsl(25 16% 14% / 0.10);
+    --gradient-gold: linear-gradient(135deg, hsl(0 0% 82%), hsl(0 0% 45%)); /* Polished Platinum Silver gradient */
+    --gradient-dark: linear-gradient(180deg, hsl(0 0% 8%), hsl(0 0% 18%));
+    --gradient-fade: linear-gradient(180deg, hsl(0 0% 98% / 0), hsl(0 0% 98% / 1));
+    --shadow-luxe: 0 30px 80px -20px hsl(0 0% 0% / 0.15);
+    --shadow-soft: 0 10px 40px -10px hsl(0 0% 0% / 0.05);
     --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
 
-    --destructive: 8 55% 52%;
-    --destructive-foreground: 36 28% 96%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 30 14% 86%;
-    --input: 30 14% 86%;
-    --ring: 32 35% 52%;
+    --border: 0 0% 88%;
+    --input: 0 0% 88%;
+    --ring: 0 0% 15%;
 
     --radius: 0.75rem;
 
     --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
+    --sidebar-foreground: 0 0% 26.1%;
+    --sidebar-primary: 0 0% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-accent: 0 0% 95.9%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 0 0% 91%;
+    --sidebar-ring: 0 0% 59.8%;
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+  .bg-obsidian, .dark {
+    --background: 0 0% 8%;
+    --foreground: 0 0% 98%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 98%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 10%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 0 0% 98%;
+    --accent-foreground: 0 0% 10%;
+
+    --gold: 0 0% 98%; /* Replaced gold with clean high-contrast off-white in dark containers */
+    --gold-soft: 0 0% 20%; /* Dark platinum silver/slate gray */
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 0 0% 83.9%;
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 95.9%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 0 0% 10%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 95.9%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 0 0% 83.9%;
   }
 }
 
@@ -181,11 +177,11 @@ All colors MUST be HSL.
      plus a barely-there film grain overlay for paper/print texture. */
   .product-frame {
     background:
-      radial-gradient(120% 80% at 50% 0%, hsl(36 32% 97%) 0%, hsl(32 20% 92%) 55%, hsl(30 16% 88%) 100%);
+      radial-gradient(120% 80% at 50% 0%, hsl(0 0% 98%) 0%, hsl(0 0% 93%) 55%, hsl(0 0% 88%) 100%);
     box-shadow:
-      inset 0 60px 60px -40px hsl(36 30% 100% / 0.7),
-      inset 0 -50px 70px -30px hsl(25 16% 14% / 0.10),
-      inset 0 0 0 1px hsl(30 14% 86% / 0.6);
+      inset 0 60px 60px -40px hsl(0 0% 100% / 0.7),
+      inset 0 -50px 70px -30px hsl(0 0% 0% / 0.06),
+      inset 0 0 0 1px hsl(0 0% 86% / 0.6);
     position: relative;
     isolation: isolate;
   }
@@ -207,7 +203,7 @@ All colors MUST be HSL.
     right: 18%;
     bottom: 6%;
     height: 14%;
-    background: radial-gradient(50% 100% at 50% 100%, hsl(25 16% 14% / 0.35) 0%, hsl(25 16% 14% / 0) 70%);
+    background: radial-gradient(50% 100% at 50% 100%, hsl(0 0% 0% / 0.22) 0%, hsl(0 0% 0% / 0) 70%);
     filter: blur(6px);
     pointer-events: none;
     z-index: 0;
@@ -219,7 +215,7 @@ All colors MUST be HSL.
 }
 
 @layer utilities {
-  .text-gold { color: hsl(var(--gold)); }
+  .text-gold { color: hsl(var(--primary)); }
   .bg-gold { background-color: hsl(var(--gold)); }
   .bg-obsidian { background-color: hsl(var(--obsidian)); }
   .bg-ivory { background-color: hsl(var(--ivory)); }

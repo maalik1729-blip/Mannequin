@@ -41,7 +41,7 @@ export const Hero = () => {
           </div>
 
           <h1 className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-[7.5rem] leading-[0.92] text-balance text-ivory">
-            Sculpting <em className="not-italic font-light italic text-ivory/70">silent</em><br/>
+            Sculpting <em className="font-light italic text-ivory/70">silent</em><br/>
             storytellers for<br/>
             <span className="text-ivory/60">elevated</span> spaces.
           </h1>

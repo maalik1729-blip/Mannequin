@@ -89,12 +89,12 @@ export const Header = () => {
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-smooth ${
         scrolled
-          ? "bg-obsidian/95 backdrop-blur-xl border-b border-gold/20 shadow-luxe"
+          ? "bg-obsidian bg-obsidian/95 backdrop-blur-xl border-b border-gold/20 shadow-luxe"
           : "bg-transparent"
       }`}
     >
       {/* Announcement bar — desktop only */}
-      <div className="hidden md:block bg-obsidian/80 text-gold text-xs border-b border-gold/20 relative z-10">
+      <div className="hidden md:block bg-obsidian bg-obsidian/80 text-gold text-xs border-b border-gold/20 relative z-10">
         <div className="container flex justify-between py-2.5">
           <span className="tracking-widest uppercase font-medium">Crafted in India · Worldwide Shipping</span>
           <span className="text-white font-medium flex items-center gap-2">
