@@ -1,46 +1,42 @@
-# Agent Rules — TNVS Frontend Redesign
+# Agent Rules — A K Enterprises Mannequin Storefront Redesign
 
 ## Scope Enforcement (Highest Priority)
-- NEVER modify: voter-api-server.js, package.json, vite.config.ts,
-  tsconfig.json, eslint.config.js, or any file outside src/
-- NEVER add new npm packages — work with what is installed
-- NEVER modify the outputs/ folder contents from a previous stage run
-  (append a _v2 suffix if re-running)
-- ALL changes are inside src/ only
+- **NEVER modify**: `package.json`, `vite.config.ts`, `postcss.config.js`, `tsconfig.json`, `eslint.config.js`, or any file outside the `src/` directory.
+- **NEVER add new npm packages**: utilize what is currently installed in the workspace (Vite, React 18, React Router v6, Radix, Tailwind v3, Lucide React, etc.).
+- **NEVER edit outputs** from previously completed stages. If a re-run occurs, append a `_v2` suffix to the file name.
+- **ALL modifications** are strictly confined to the `src/` directory only.
+
+---
 
 ## Code Rules
-- TypeScript only — no .js files inside src/
-- Tailwind classes only for styling — no inline style={} objects
-  unless Tailwind cannot express the property
-- Use CSS custom properties (var(--color-navy)) in src/styles.css
-  as the single source of truth for brand colors
-- Do not introduce new component libraries — use what is in
-  src/components/ui/ (shadcn) already
-- Framer Motion: reduce, do not add new usages
-- Lenis: remove if found, do not add
+- **TypeScript Only**: No raw JavaScript files allowed inside `src/`. All new or modified files must enforce type safety.
+- **Tailwind-First Utility Classes**: Styling must rely on Tailwind utility classes. Do not use inline `style={}` objects unless the desired visual property cannot be expressed via Tailwind.
+- **Theme Variables single source of truth**: Use the custom HSL design tokens (`--background`, `--foreground`, `--primary`, `--gold`, etc.) defined inside `src/index.css` for both light (Pearl Silk) and dark (Espresso Obsidian) modes.
+- **Dynamic Multi-Currency Pricing**: Every price string rendered in any card, drawer, checkout total, or spec sheet must be formatted dynamically through the `useCurrency` `format` hook. Hardcoded currency symbols (`₹` or `$`) in text strings are prohibited.
+- **Component Libraries**: Do not introduce any external UI libraries. Limit components to what exists in `src/components/ui/` or Radix primitives.
+
+---
 
 ## Quality Rules
-- Every change must be TypeScript-valid — no @ts-ignore additions
-- Every Select/option component must use the full 38-district array
-  defined in Stage 4. Never partial.
-- All bilingual labels follow pattern: Tamil / English
-  Example: "சென்னை / Chennai" not "Chennai (சென்னை)"
-- Touch targets: all interactive elements must have min-h-11
-  (44px) on mobile — check Tailwind responsive prefix
+- **TypeScript Validity**: Every change must compile without TypeScript warnings or errors. Do not insert `@ts-ignore` comments.
+- **Robust B2B/B2C Validations**: Checkout and custom quote request forms must implement complete client-side Zod validation schemas with descriptive error message feedback.
+- **Scroll Lock Protocol**: Overlay drawers (`CartDrawer`) and product details modals must lock background body scrolling. Adjust the `useLenis()` hook states or toggle a scroll-lock class to avoid touch-device scroll leak.
+- **Wishlist Syncing**: Heart favorites toggled inside homepage collection cards must instantly sync their visual state with related product card selections without requiring a manual page refresh.
+- **Touch Target Accessibility**: All interactive elements (buttons, selectors, toggles) must maintain a minimum height/width of 44px (`h-11` or `min-h-[44px]`) on mobile devices.
+
+---
 
 ## Communication Rules
-- After each stage: post a 3-line summary in chat
-  Line 1: Files read
-  Line 2: Files written/modified
-  Line 3: Top finding or blocker
-- If a required file from a previous stage is missing:
-  HALT and tell the user exactly which command to run first
-- If a src/ file does not exist where expected:
-  List what files DO exist in that directory before proceeding
-- Never silently skip a fix from Stage 4
+- **After Each Stage**: Output a concise, three-line report in the agent chat:
+  - **Line 1**: Files read
+  - **Line 2**: Files written or modified
+  - **Line 3**: Top finding or development blocker
+- **Missing Inputs**: If a required output file from a prior stage is missing, halt execution and ask the user to run the preceding command.
+- **Directory Audit**: If an expected source file is missing from a specified route path, list the active directory contents in the chat before executing any fallback logic.
+
+---
 
 ## Output Rules
-- outputs/ folder: markdown files only, no code files
-- src/ changes: real working TypeScript/TSX code only
-- Document every src/ file modified in outputs/change_log.md
-  Format: [timestamp] | [file path] | [what changed]
+- **Documentation Folder**: The `outputs/` folder must contain only markdown files (`.md`). Do not save active source code inside this folder.
+- **Change Log Tracking**: Document every single source file modified during Stage 4 inside `ui_redesign/outputs/change_log.md` using the exact format:
+  `[timestamp] | [file path] | [summary of what changed]`

@@ -1,454 +1,292 @@
-# /ui-redesign — TNVS Frontend Redesign Pipeline
+# /ui-redesign — A K Enterprises Mannequin Storefront Redesign Pipeline
 
-> Type /ui-redesign in Antigravity to run all 5 stages.
-> Frontend only. No backend files touched.
-> Agent reads each stage output before proceeding to the next.
-
-// turbo
+> Type `/ui-redesign` in Antigravity to run all 5 stages.
+> Frontend changes only. No build-env files are modified.
+> The agent automatically reviews each stage output before proceeding.
 
 ---
 
 ## Pre-flight
 
-Before Stage 1, open and read these files using the editor:
-- src/styles.css
-- src/routes/index.tsx
-- src/routes/membership.tsx
-- src/routes/wings.tsx
-- src/routes/dashboard.tsx
-- src/routes/voter-id.tsx
-- src/routes/assistant.tsx
-- Any file in src/components/ that appears to be a shared layout
-  component (look for Nav, Header, Layout, or Root in the filename)
+Before commencing Stage 1, inspect the following files using the editor to understand the app layout:
+- `src/index.css`                      ← Styles, custom luxury palettes, fonts
+- `src/App.tsx`                        ← Context Providers, BrowserRoutes
+- `src/pages/Index.tsx`                ← Homepage structure
+- `src/pages/ProductDetails.tsx`        ← Restock modals, quantity controls
+- `src/pages/Checkout.tsx`             ← Form layout, B2B/B2C toggle
+- `src/pages/QuoteRequest.tsx`         ← Bespoke quotation forms
+- `src/components/site/Header.tsx`     ← Main branding header
+- `src/components/site/Products.tsx`   ← Products display grid
+- `src/components/site/CartDrawer.tsx` ← Shop cart slider drawer
+- `src/hooks/useLenis.ts`              ← Smooth scroll hook
 
-Confirm in chat: which files were found, how many lines each,
-and whether a shared Navbar component exists or is duplicated
-across route files.
+Confirm in the chat: which files were loaded, their line lengths, and how the global contexts (`Cart`, `Wishlist`, `Currency`, `Theme`) propagate down to them.
 
 ---
 
-## Stage 1 — UI Audit (Frontend Code + Live Site)
+## Stage 1 — UI Audit (Frontend Code & Layouts)
 
-**Read:** All src/routes/*.tsx and src/components/ files
-**Write:** outputs/01_ui_audit.md
+**Read**: All `.tsx` pages in `src/pages/` and custom site components in `src/components/site/`
+**Write**: `outputs/01_ui_audit.md`
 
-### What to audit in the code — not just visually
+### Audit Specifications
 
-**Design token audit**
-Search src/styles.css and all .tsx files for:
-- Any hardcoded hex values (#0A1F44, #C9A84C, or similar navy/gold)
-- Any Tailwind arbitrary values like bg-[#0A1F44] or text-[#C9A84C]
-- Whether CSS custom properties (--color-navy, --color-gold) exist
-- Whether Tailwind config extends the theme with brand tokens
+#### 1. Currency Display & Formatting Audit
+Scan `src/components/site/Products.tsx`, `src/components/site/CartDrawer.tsx`, `src/pages/Checkout.tsx`, and `src/pages/Wishlist.tsx` for:
+- Any hardcoded Indian Rupee (`₹`) symbols or dollar symbols in text strings.
+- Lines where raw numeric prices (e.g. `product.priceINR`) are displayed without wrapping them in the `CurrencyContext` `format()` utility.
+- Audit whether currency toggle state changes propagate instantly to the shopping cart drawer subtotal and checkout summaries.
 
-Document every file where brand colors are hardcoded.
+#### 2. Scroll Interactivity & Drawer Collision Audit
+Audit `src/hooks/useLenis.ts` and overlays like `CartDrawer.tsx` and the restock capture modal inside `ProductDetails.tsx` for:
+- Check if background scrolling remains active when these dialogs/overlays are rendered.
+- Check if there are scroll-lock utilities or Lenis instances that need manual start/stop actions.
+- List touch-screen behavior when dragging elements inside the cart drawer.
 
-**Component duplication audit**
-- Is the navigation bar a shared component or duplicated in each route?
-- Is the footer a shared component or duplicated?
-- Is the utility bar (Reg. No. + phone) a shared component?
-Document any component duplicated across more than one route file.
+#### 3. Checkout and Quote Validation Audit
+Open `src/pages/Checkout.tsx` and `src/pages/QuoteRequest.tsx`:
+- Inspect form fields and validation handlers (`onSubmit`, validation regex, manual state checking).
+- Identify fields that lack mandatory error feedback or permit invalid submissions.
+- Check if B2B-specific variables (like company name or GSTIN number) have robust validators.
 
-**District dropdown audit**
-Open src/routes/membership.tsx.
-Count exactly how many districts are in the Select component.
-List which are missing vs the full 38 TN districts.
-This is [CRITICAL] — note it prominently.
+#### 4. Grid and Wishlist Sync Audit
+Audit the catalog cards in `Products.tsx`:
+- Review the `Heart` favorite icon buttons.
+- Check if favoriting an item inside the landing grid immediately updates that item's heart state in the related products list or inside the wishlisted pages without page refreshes.
 
-**Language toggle audit**
-Find the TA|EN toggle in the codebase.
-Is it wired to any state? Does it change any text?
-Is there an i18n library? Any translation strings?
-If it does nothing: [CRITICAL].
-
-**Animation audit**
-Search all .tsx files for: motion., useAnimation, AnimatePresence,
-framer-motion imports.
-List every file that imports from framer-motion.
-Mark any animation that runs on scroll or on page load as a
-mobile performance risk.
-
-Search for: import Lenis, new Lenis, useLenis
-If found: [HIGH] — document the file.
-
-**Bundle weight audit (from package.json)**
-List every @radix-ui/* package installed.
-Cross-reference against actual imports found in src/.
-List which Radix packages are installed but not imported anywhere.
-These are dead weight.
-
-**Mobile layout audit**
-In each route file, check for:
-- Grid or flex containers without responsive breakpoint classes
-- Fixed pixel widths that will overflow at 375px
-- Touch targets smaller than 44px (h-11 or min-h-[44px] in Tailwind)
-- Any overflow-x issues from the stats row or card grids
+#### 5. Mobile Viewport & Typography Audit
+Audit all routes at a `375px` simulated mobile screen width:
+- Detect fixed pixel sizes that will overflow container limits.
+- Audit touch targets; make sure buttons, selectors, and tabs have a minimum height/width of 44px (`min-h-[44px]`).
+- Verify that luxury font families (`Cormorant Garamond` and `Outfit`) are configured with appropriate fallbacks to prevent flash-of-unstyled-text (FOUT) on slower mobile connections.
 
 ### Required Output Structure
 
-```
-# 01 — TNVS Frontend UI Audit
+```markdown
+# 01 — A K Enterprises UI Audit
 
 ## Executive Summary
+[Brief overview of the storefront health, performance, and B2B/B2C readiness]
 
-## Design Token Findings
-[Every file with hardcoded colors. Severity tagged.]
+## Dynamic Currency Findings
+[Every location where raw prices are hardcoded or desynced. Severity tagged.]
 
-## Component Duplication Findings
-[Nav, footer, utility bar — shared or duplicated?]
+## Scroll Interactivity & Lock Findings
+[Lenis-overlay collisions, background scrolling, and mobile touch lock conflicts]
 
-## Critical Functional Bugs
-[District dropdown, language toggle — with exact file + line context]
+## Form Validation & Schema Findings
+[Areas in Checkout/QuoteRequest lacking robust validators or Zod integrations]
 
-## Animation & Performance Findings
-[Every framer-motion usage. Lenis if present.]
+## Wishlist & Grid Sync Findings
+[Behavior of heart favorite toggles on grids and related item lists]
 
-## Dead Dependency Findings
-[Radix packages installed but not imported]
+## Mobile Viewport & Accessibility Findings
+[Overflow issues at 375px width, touch targets < 44px, FOUT risks]
 
-## Mobile Layout Findings
-[Responsive gaps found in code]
-
-## Prioritized Fix List
+## Prioritized Redesign Checklist
 [Ranked: CRITICAL → HIGH → MEDIUM → LOW]
-[Each item: file path, what to change, why]
+[Each item: file path, required correction, rationale]
 ```
 
 ---
 
-## Stage 2 — UX Strategy (Frontend Logic Only)
+## Stage 2 — UX Strategy (Data Sync & Validation Layout)
 
-**Read:** outputs/01_ui_audit.md
-**Write:** outputs/02_ux_strategy.md
+**Read**: `outputs/01_ui_audit.md`
+**Write**: `outputs/02_ux_strategy.md`
 
-### What to produce
+### Strategy Specifications
 
-Do NOT suggest visual changes yet.
-Focus on: component structure, information hierarchy, interaction
-logic, state management patterns, routing behavior.
+Focus strictly on information hierarchy, validation mechanisms, state propagation, and interactive transitions.
 
-**Navigation strategy**
-Should the nav be a shared Root layout component?
-What is the correct TanStack Router layout hierarchy?
-Where should the language toggle state live?
+#### 1. Currency Formatting Propagation
+- Design a centralized formatting standard using the global `CurrencyContext` to ensure all prices convert dynamically between INR and USD across grids, sliders, cart tables, and checkout totals.
 
-**Registration form strategy**
-What is the correct multi-step form architecture in React Hook Form?
-How should district data be structured — constant, API call, or
-Zod enum?
-What validation should trigger on each step vs on submit?
-What happens if a user navigates back — does form state persist?
+#### 2. Body Scroll Locking Strategy
+- Formulate a clean protocol to lock/unlock Lenis smooth scrolling. When overlay dialogs or drawers are active, the body scroll must be locked either by pausing the Lenis instance or by applying temporary CSS variables (`overflow: hidden`).
 
-**Dashboard strategy**
-What is the minimum viable auth flow for demo mode?
-(Mobile input → simulated OTP → demo dashboard state)
-Where should auth state live — TanStack Router context, Zustand,
-or React context?
+#### 3. Schema-Based Validation
+- Architect robust Zod schemas paired with React Hook Form for `/checkout` and `/request-quote`. Define specific validators for:
+  - Phone numbers (strict 10-digit formats).
+  - Commercial GSTIN codes (for B2B wholesale transactions).
+  - Boutique descriptions and customized fabrication specifications.
 
-**Card generator strategy (/voter-id)**
-The form currently accepts manual input.
-For frontend-only: what is the correct UX flow assuming the API
-is unavailable? (Search → show demo card → clear message that
-real data requires login)
+#### 4. State Event Synchronization
+- Propose a state management strategy to sync favorited heart states instantly across all active cards on the page without requiring full re-renders.
 
-**Language toggle strategy**
-Option A: Implement basic i18n with a JSON string file
-Option B: Remove toggle, commit to Tamil-primary, add English
-  subtitles as a pattern throughout
-Recommend one option with reasoning.
+#### 5. Checkout Interactive Segmenting
+- Design a high-fidelity B2B/B2C transition strategy for the segment toggles in Checkout. Detail the visual transformation as the form expands from a standard retail order form to a complex wholesale proposal capture.
 
 ### Required Output Structure
 
-```
+```markdown
 # 02 — UX Strategy
 
-## Strategy Overview
-
-## Navigation Architecture
-## Registration Form Architecture
-## Dashboard Auth Flow (Demo Mode)
-## Card Generator Flow
-## Language Toggle Decision
-## Component Hierarchy Recommendations
-## State Management Recommendations
-## Recommended UX Priorities (Top 10)
+## Redesign Strategy Overview
+## Multi-Currency Pricing Architecture
+## Smooth Scroll Lock & Drawer Interactivity Protocol
+## Centralized Form Validation Schemas (Zod + Hook Form)
+## Real-Time Wishlist Event Synchronization
+## Segmented Checkout UX (B2B vs B2C Transition Logic)
+## Component Hierarchy Upgrades
+## Top 10 UX Enhancement Priorities
 ```
 
 ---
 
 ## Stage 3 — Design Tokens + Visual Direction
 
-**Read:** outputs/02_ux_strategy.md + outputs/01_ui_audit.md
-**Write:** outputs/03_visual_tokens.md
-**Also write:** src/styles.css (updated with token system)
+**Read**: `outputs/02_ux_strategy.md` + `outputs/01_ui_audit.md`
+**Write**: `outputs/03_visual_tokens.md`
+**Also update**: `src/index.css` (integrates the premium styling block)
 
-### What to produce
+### Design Specifications
 
-**Part A — Token document**
+#### 1. Couture Color System (HSL Tokens)
+Define custom HSL custom properties inside `src/index.css` for light (Pearl Silk) and dark (Espresso Obsidian) mode variables:
+- Light Mode: Pearl Silk base background, Espresso text, Platinum Silver accent, Secondary Pearl borders.
+- Dark Mode: Espresso Obsidian base background, Soft Pearl text, Pure Onyx borders.
 
-Define the complete design token system for this project.
-Every token as a CSS custom property.
-
-Required token groups:
-- Colors: --color-navy, --color-gold, --color-navy-light,
-  --color-gold-light, semantic aliases
-  (--color-primary, --color-accent, --color-surface, etc.)
-- Typography: --font-body, --font-display, --font-tamil
-  (Tailwind v4 uses @theme for font config)
-- Spacing: confirm base unit (4px grid)
-- Border radius: --radius-sm, --radius-md, --radius-lg, --radius-xl
-- Shadows: minimal — one elevation level only
-- Z-index: --z-nav, --z-modal, --z-toast
-
-Also define Tailwind v4 @theme extension for brand colors so
-they're available as bg-navy, text-gold, etc. without arbitrary
-values.
-
-**Part B — Component visual direction**
-
-For each component below, specify the exact Tailwind classes
-that implement the design direction. No prose descriptions —
-actual class strings.
-
-Components to specify:
-1. Utility bar (top strip with Reg. No.)
-2. Navigation bar (desktop + mobile)
-3. Hero section
-4. Stats row (4 numbers)
-5. Service card
-6. Wing card
-7. Registration stepper indicator
-8. Form input field
-9. Primary button
-10. Secondary button
-11. Dashboard member card
-12. Demo mode banner (replace amber ⚠ with blue info style)
-13. Footer
-
-For each:
-- Container classes
-- Text classes
-- Interactive state classes (hover:, focus:, active:)
-- Mobile variant classes (responsive prefixes)
-- Any Framer Motion usage: keep or replace with CSS?
+#### 2. Class Specifications for Luxury Elements
+Specify actual Tailwind class strings for key components to ensure design uniformity:
+1. **Header Navigation Bar**: glassmorphic blurring, border transitions.
+2. **Product Display Frame (`.product-frame`)**: radial glow gradients, paper-grain noise overlays, and floor shadow levels.
+3. **Primary & Secondary Buttons**: scale modifications, hover transitions, and border curves.
+4. **B2B/B2C Checkout Toggle**: sliding background, high-contrast states.
+5. **Restock Capture Modals**: backdrop blur depths, elegant card framing.
 
 ### Required Output Structure
 
-```
-# 03 — Design Tokens + Visual Direction
+```markdown
+# 03 — Design Tokens & Visual Direction
 
-## Token System
-[Full CSS custom property list]
+## HSL Token System
+[Standard CSS Custom Property block]
 
-## Tailwind v4 @theme Extension
-[Copy-paste ready block for src/styles.css]
+## Extended Tailwind Typography & Theme Config
+[Theme extensions to integrate Cormorant Garamond, Outfit, and Inter]
 
-## Component Class Specifications
-[Component by component, actual Tailwind class strings]
+## Luxury Component Class Specifications
+[Copy-paste ready Tailwind utility class sets for headers, product-frames, forms, and buttons]
 
-## What Replaces Framer Motion
-[CSS transition/animation replacements for each removed usage]
+## Micro-Animation & Backdrop Blurs
+[Transition cubic-beziers, scroll-reveal properties, and glassmorphic blurs]
 
-## Font Strategy
-[Tamil font: Noto Sans Tamil via Google Fonts — loading strategy
- for slow connections. font-display: swap. Preload hint.]
+## Fonts & Performance Optimization
+[Google Font loading, display: swap fallbacks, and preload targets]
 ```
 
 ---
 
-## Stage 4 — Component Fixes (Actual Code Changes)
+## Stage 4 — Component Fixes (React Code Execution)
 
-**Read:** outputs/03_visual_tokens.md + outputs/02_ux_strategy.md
-**Write:** outputs/04_change_plan.md
-**Also modify:** actual src/ files
+**Read**: `outputs/03_visual_tokens.md` + `outputs/02_ux_strategy.md`
+**Write**: `outputs/04_change_plan.md`
+**Also modify**: actual source files in `src/`
 
-### Instructions
+### Execution Specifications
 
-This stage writes real code. For each fix below, open the
-relevant file, make the change, and confirm in outputs/04_change_plan.md
-exactly what was changed, in which file, at which line.
+Apply changes directly to the React components. Document every modified file inside `outputs/change_log.md` chronologically.
 
-// turbo
+#### Fix 1 — Centralized Colors & Custom Typography in `src/index.css`
+- Inject the full set of HSL variables for the Pearl Silk and Espresso Obsidian themes.
+- Confirm headings use `Cormorant Garamond` and prices use `Outfit`.
 
-**Fix 1 — Design tokens in src/styles.css**
-Add the full CSS custom property block from Stage 3.
-Add the Tailwind v4 @theme extension block.
-Remove any existing hardcoded color arbitrary values found in Stage 1.
+#### Fix 2 — Multi-Currency Syncing
+- Update price elements in `Products.tsx`, `CartDrawer.tsx`, and `Checkout.tsx` to query `useCurrency()` and run the `format()` function dynamically. Eliminate all hardcoded rupee symbols.
 
-**Fix 2 — All 38 districts in membership form**
-Open src/routes/membership.tsx.
-Create a constant array TN_DISTRICTS with all 38 Tamil Nadu
-districts in Tamil + English:
-[
-  { value: 'ariyalur', label: 'அரியலூர் / Ariyalur' },
-  { value: 'chengalpattu', label: 'செங்கல்பட்டு / Chengalpattu' },
-  { value: 'chennai', label: 'சென்னை / Chennai' },
-  { value: 'coimbatore', label: 'கோயம்புத்தூர் / Coimbatore' },
-  { value: 'cuddalore', label: 'கடலூர் / Cuddalore' },
-  { value: 'dharmapuri', label: 'தர்மபுரி / Dharmapuri' },
-  { value: 'dindigul', label: 'திண்டுக்கல் / Dindigul' },
-  { value: 'erode', label: 'ஈரோடு / Erode' },
-  { value: 'kallakurichi', label: 'கள்ளக்குறிச்சி / Kallakurichi' },
-  { value: 'kancheepuram', label: 'காஞ்சிபுரம் / Kancheepuram' },
-  { value: 'kanniyakumari', label: 'கன்னியாகுமரி / Kanniyakumari' },
-  { value: 'karur', label: 'கரூர் / Karur' },
-  { value: 'krishnagiri', label: 'கிருஷ்ணகிரி / Krishnagiri' },
-  { value: 'madurai', label: 'மதுரை / Madurai' },
-  { value: 'mayiladuthurai', label: 'மயிலாடுதுறை / Mayiladuthurai' },
-  { value: 'nagapattinam', label: 'நாகப்பட்டினம் / Nagapattinam' },
-  { value: 'namakkal', label: 'நாமக்கல் / Namakkal' },
-  { value: 'nilgiris', label: 'நீலகிரி / Nilgiris' },
-  { value: 'perambalur', label: 'பெரம்பலூர் / Perambalur' },
-  { value: 'pudukkottai', label: 'புதுக்கோட்டை / Pudukkottai' },
-  { value: 'ramanathapuram', label: 'ராமநாதபுரம் / Ramanathapuram' },
-  { value: 'ranipet', label: 'ராணிப்பேட்டை / Ranipet' },
-  { value: 'salem', label: 'சேலம் / Salem' },
-  { value: 'sivaganga', label: 'சிவகங்கை / Sivaganga' },
-  { value: 'tenkasi', label: 'தென்காசி / Tenkasi' },
-  { value: 'thanjavur', label: 'தஞ்சாவூர் / Thanjavur' },
-  { value: 'theni', label: 'தேனி / Theni' },
-  { value: 'thoothukudi', label: 'தூத்துக்குடி / Thoothukudi' },
-  { value: 'tiruchirappalli', label: 'திருச்சிராப்பள்ளி / Tiruchirappalli' },
-  { value: 'tirunelveli', label: 'திருநெல்வேலி / Tirunelveli' },
-  { value: 'tirupattur', label: 'திருப்பத்தூர் / Tirupattur' },
-  { value: 'tiruppur', label: 'திருப்பூர் / Tiruppur' },
-  { value: 'tiruvallur', label: 'திருவள்ளூர் / Tiruvallur' },
-  { value: 'tiruvannamalai', label: 'திருவண்ணாமலை / Tiruvannamalai' },
-  { value: 'tiruvarur', label: 'திருவாரூர் / Tiruvarur' },
-  { value: 'vellore', label: 'வேலூர் / Vellore' },
-  { value: 'viluppuram', label: 'விழுப்புரம் / Viluppuram' },
-  { value: 'virudhunagar', label: 'விருதுநகர் / Virudhunagar' },
-]
-Replace the existing hardcoded Select options with this array
-mapped to <SelectItem> components.
+#### Fix 3 — Lenis Scrolling Lock
+- Modify `src/hooks/useLenis.ts` to expose pause/resume scroll methods. Wire these triggers to `CartDrawer.tsx` open/close actions and the restock modal inside `ProductDetails.tsx` to stop background page scrolling.
 
-**Fix 3 — Language toggle**
-Based on Stage 2 decision (implement or remove):
-If implement: create src/lib/i18n.ts with a minimal string store.
-  Create useLanguage() hook. Wire TA|EN toggle to toggle state.
-  Update at minimum: nav labels, hero heading, CTA text.
-If remove: delete the toggle from the nav component entirely.
-  Replace with a static bilingual label pattern on key headings.
+#### Fix 4 — Robust Form Validations (Zod integration)
+- Rewrite validation systems inside `Checkout.tsx` and `QuoteRequest.tsx`. Wire in schema validations to block incomplete submissions, and display descriptive error messages beneath invalid inputs.
 
-**Fix 4 — Shared layout components**
-If Nav is duplicated across route files:
-  Extract to src/components/layout/Navbar.tsx
-  Extract Footer to src/components/layout/Footer.tsx
-  Extract UtilityBar to src/components/layout/UtilityBar.tsx
-  Wire into the TanStack Router root layout (__root.tsx)
+#### Fix 5 — Wishlist Syncing
+- Refactor the click handler in `Products.tsx` so that toggling an item's favorite state immediately triggers card context updates, updating all heart icons across the homepage collections.
 
-**Fix 5 — Demo mode banner**
-Find the amber ⚠ banner component used in dashboard and assistant.
-Replace with a blue info style using token classes.
-Text change: remove ⚠ icon, use an info circle icon (Lucide: Info).
-Background: --color-surface-info (blue-50 equivalent).
-Border: 1px solid --color-border-info.
-
-**Fix 6 — Remove Lenis**
-If Lenis is imported anywhere in src/:
-Remove the import and initialization.
-Add scroll-behavior: smooth to src/styles.css for anchor links only.
-
-**Fix 7 — Reduce Framer Motion**
-For every framer-motion usage found in Stage 1:
-If it's a decorative scroll animation or entrance fade: replace with
-  CSS @keyframes fadeIn + animation class.
-If it's the registration stepper progress indicator: keep it.
-If it's page transition: replace with CSS view-transition API or
-  a simple CSS opacity transition on the route wrapper.
+#### Fix 6 — High-Contrast Segment Toggle
+- Update `/checkout` segmented control with transition classes, sliding highlights, and distinct visual indicators for Retail (B2C) vs Wholesale (B2B).
 
 ### Required Output Structure
 
-```
-# 04 — Change Plan
+```markdown
+# 04 — Component Fixes Change Plan
 
-## Files Modified
-[File path | What changed | Lines affected]
+## Summary of Code Changes
+[File path | Change description | Line ranges affected]
 
-## Fix 1: Design Tokens
-## Fix 2: 38 Districts
-## Fix 3: Language Toggle
-## Fix 4: Shared Layout
-## Fix 5: Demo Banner
-## Fix 6: Lenis Removal
-## Fix 7: Framer Motion Reduction
+## Fix 1: Luxury CSS Variables & Dark Mode Variables
+## Fix 2: Dynamic Currency Pricing Integration
+## Fix 3: Lenis Scroll Lock Protocol
+## Fix 4: Zod Schema Form Validations
+## Fix 5: Synced Grid Wishlist Context Toggles
+## Fix 6: Symmetrical B2B/B2C Checkout Transitions
 
-## Verification Steps
-[How to confirm each fix works in the browser]
+## Local Validation Verification
+[Manual terminal execution reports: build status, TypeScript correctness checks]
 ```
 
 ---
 
-## Stage 5 — Final Review
+## Stage 5 — Final Review (Multi-Viewport Quality Check)
 
-**Read:** outputs/04_change_plan.md
-**Write:** outputs/05_final_review.md
+**Read**: `outputs/04_change_plan.md`
+**Write**: `outputs/05_final_review.md`
 
-### What to check
+### Verification Specifications
 
-1. Open each modified file. Confirm changes are actually present.
-2. Check src/styles.css — do all token variables exist?
-3. Check src/routes/membership.tsx — count Select options. Must be 38.
-4. Check the language toggle — is it functional or removed? Either
-   is acceptable. A broken in-between state is not.
-5. Check __root.tsx — is Nav/Footer imported from shared components?
-6. Search entire src/ for remaining hardcoded brand hex values.
-   Any found after Stage 4 = Stage 4 incomplete.
-7. Search for remaining framer-motion imports.
-   If more than 1-2 files still import it: flag.
-8. Search for lenis. If found: flag as Stage 4 incomplete.
+1. Open modified files to verify the implemented fixes are fully integrated.
+2. Confirm the multi-currency conversions work seamlessly without layout shifts.
+3. Test forms with invalid inputs; verify that checkout is blocked and display errors correctly.
+4. Verify scroll lock functionality on mobile-width sizes.
+5. Search the codebase for hardcoded `₹` characters or remaining voter/TNVS references.
 
-### Mobile simulation check
-Use the browser subagent. Open vanigan-digital.vercel.app
-(or localhost:8080 if dev server running).
-Set viewport to 375px width.
-Check on each page:
-- Does the nav collapse correctly?
-- Does the stats row stack without overflow?
-- Are all card grids readable at 375px?
-- Is the registration form usable with one thumb?
-Flag any layout that breaks at 375px.
+### Viewport Verification Protocol
+Using a browser agent or local simulator, inspect the website at `375px` mobile viewport width:
+- Verify header collapses correctly.
+- Verify checkout summaries and product detail images fit without overflowing.
+- Verify touch targets feel comfortable to interact with on mobile.
 
 ### Required Output Structure
 
-```
+```markdown
 # 05 — Final Review
 
-## Verification Results
-[Pass/Fail for each Stage 4 fix]
+## Redesign Verification Results
+[Pass/Fail outcomes for each of the 6 Stage 4 fixes]
 
-## Remaining Hardcoded Colors
-[Any found — file + line]
+## Hardcoded Elements Check
+[Verification that all static symbols have been removed]
 
-## Remaining Framer Motion Usage
-[Files still importing it — justified or not?]
+## Scroll Lock Audit Results
+[Performance of background locking during drawer/modal rendering]
 
-## Mobile Check Results
-[375px viewport results per page]
+## Mobile 375px Viewport Assessment
+[Layout responsiveness, overflow analysis, and touch-target checks]
 
-## Outstanding Issues
-[Anything not fixed in Stage 4 — with reason]
+## Remaining Outstanding Issues
+[Any unfinished fixes with complete technical explanations]
 
-## Release Readiness
-[Ready / Not ready — one line verdict with conditions]
+## Redesign Verdict
+[Ready / Not Ready - one-line assessment with strict dependencies]
 ```
 
 ---
 
 ## Post-Pipeline
 
-After Stage 5 completes, post this summary in chat:
+After completing Stage 5, share a concise summary in the chat:
 
 ```
-TNVS Frontend Redesign — Pipeline Complete
+A K Enterprises Storefront UI Redesign — Pipeline Complete
 
-Modified files: [list from change_log.md]
-Districts added: [count — should be 38]
-Language toggle: [implemented / removed]
-Lenis: [removed / not found]
-Framer Motion: [files remaining]
-Mobile 375px: [pass / issues found]
+Modified files: [comma-separated paths from outputs/change_log.md]
+Currency Conversion: [Synced / Issues outstanding]
+Scroll Lock Protocol: [Implemented / Issues outstanding]
+Zod Schema Form Validations: [Checkout & QuoteRequest fully protected]
+Grid Wishlist Toggles: [Real-time syncing enabled]
+Mobile 375px Responsive Viewport: [Pass / Issues identified]
 
-Next: run `npm run build` to confirm no TypeScript errors.
-Then: share outputs/05_final_review.md with Ram for sign-off.
+Next: execute 'npm run build' to confirm strict type-safety compilation.
+Then: export outputs/05_final_review.md for client presentation and sign-off.
 ```
