@@ -32,6 +32,14 @@ export const Products = () => {
     }
   }, [searchParams]);
 
+  const getFilterCount = (filter: string) => {
+    if (filter === "All") return PRODUCTS.length;
+    if (filter === "Full Body Male") {
+      return PRODUCTS.filter((p) => p.tag === "Full Body Male" || p.tag === "Full Body").length;
+    }
+    return PRODUCTS.filter((p) => p.tag === filter).length;
+  };
+
   const displayed = activeFilter === "All"
     ? [...PRODUCTS].reverse()
     : PRODUCTS.filter((p) => p.tag === activeFilter);
@@ -76,7 +84,7 @@ export const Products = () => {
                     : "border border-border text-foreground/60 hover:border-foreground/60 hover:text-foreground"
                 }`}
               >
-                {filter}
+                {filter} ({getFilterCount(filter)})
               </button>
             ))}
           </div>

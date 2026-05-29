@@ -100,16 +100,16 @@ export default function CartDrawer() {
                       <button
                         onClick={() => updateQty(item.id, item.quantity - 1)}
                         aria-label="Decrease quantity"
-                        className="w-10 h-10 flex items-center justify-center hover:bg-muted transition-smooth"
+                        className="w-12 h-12 flex items-center justify-center hover:bg-muted transition-smooth"
                       >
                         <Minus size={13} />
                       </button>
-                      <span className="w-8 text-center text-sm font-medium" aria-live="polite">{item.quantity}</span>
+                      <span className="w-8 text-center text-sm font-medium font-price" aria-live="polite">{item.quantity}</span>
                       <button
                         onClick={() => updateQty(item.id, Math.min(99, item.quantity + 1))}
                         disabled={!inStock}
                         aria-label="Increase quantity"
-                        className={`w-10 h-10 flex items-center justify-center transition-smooth ${!inStock ? 'cursor-not-allowed opacity-50' : 'hover:bg-muted'}`}
+                        className={`w-12 h-12 flex items-center justify-center transition-smooth ${!inStock ? 'cursor-not-allowed opacity-50' : 'hover:bg-muted'}`}
                       >
                         <Plus size={13} />
                       </button>
@@ -177,6 +177,13 @@ export default function CartDrawer() {
             >
               Continue Shopping
             </button>
+            <div className="mt-4 pt-3.5 border-t border-border/40 flex items-center justify-center gap-1.5 text-[9px] sm:text-[10px] uppercase tracking-widest text-foreground/50 text-center font-medium transition-colors">
+              <span>Secure Invoicing</span>
+              <span className="text-gold/40">•</span>
+              <span>1-Yr Warranty</span>
+              <span className="text-gold/40">•</span>
+              <span>Pan-India Freight</span>
+            </div>
           </div>
         )}
       </div>

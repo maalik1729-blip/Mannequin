@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import Header from "@/components/site/Header";
 import Footer from "@/components/site/Footer";
 import { PRODUCTS, isProductInStock } from "@/data/products";
-import { Heart, ArrowLeft, ShoppingBag, ShoppingCart, Check, Lock, ChevronRight } from "lucide-react";
+import { Heart, ArrowLeft, ShoppingBag, ShoppingCart, Check, Lock, ChevronRight, Info, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLenis, useReveal } from "@/hooks/useLenis";
 import { useCart } from "@/context/CartContext";
@@ -20,6 +20,7 @@ export default function ProductDetails() {
   const { toggleWishlist, isInWishlist } = useWishlist();
   const { format } = useCurrency();
   const [added, setAdded] = useState(false);
+  const [showRestockModal, setShowRestockModal] = useState(false);
 
   const inStock = product ? isProductInStock(product.id) : true;
   const [qty, setQty] = useState(1);
@@ -134,7 +135,7 @@ export default function ProductDetails() {
                     <button
                       onClick={() => setQty((q) => Math.max(1, q - 1))}
                       aria-label="Decrease quantity"
-                      className="w-10 h-10 flex items-center justify-center hover:bg-muted transition-smooth"
+                      className="w-12 h-12 flex items-center justify-center hover:bg-muted transition-smooth"
                     >
                       <span className="text-lg leading-none">−</span>
                     </button>
@@ -142,7 +143,7 @@ export default function ProductDetails() {
                     <button
                       onClick={() => setQty((q) => Math.min(99, q + 1))}
                       aria-label="Increase quantity"
-                      className="w-10 h-10 flex items-center justify-center hover:bg-muted transition-smooth"
+                      className="w-12 h-12 flex items-center justify-center hover:bg-muted transition-smooth"
                     >
                       <span className="text-lg leading-none">+</span>
                     </button>
@@ -158,9 +159,12 @@ export default function ProductDetails() {
                     Buy Now
                   </Link>
                 ) : (
-                  <button disabled className="flex-1 bg-muted text-foreground/40 py-4 uppercase tracking-widest text-sm rounded-full cursor-not-allowed flex justify-center items-center gap-2">
-                    <Lock size={18} />
-                    Unavailable
+                  <button
+                    onClick={() => setShowRestockModal(true)}
+                    className="flex-1 border border-border text-foreground hover:bg-foreground hover:text-background py-4 uppercase tracking-widest text-sm rounded-full transition-smooth flex justify-center items-center gap-2"
+                  >
+                    <Info size={18} />
+                    Request Restock Info
                   </button>
                 )}
 
@@ -256,6 +260,65 @@ export default function ProductDetails() {
       </div>
 
       <Footer />
+
+      {/* Restock Lead Capture Modal */}
+      {showRestockModal && (
+        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-foreground/40 backdrop-blur-sm"
+            onClick={() => setShowRestockModal(false)}
+          />
+          {/* Modal Panel */}
+          <div className="relative w-full max-w-md bg-background border border-border rounded-2xl shadow-luxe p-6 sm:p-8 z-10 text-foreground reveal in transition-all duration-500">
+            <button
+              onClick={() => setShowRestockModal(false)}
+              className="absolute top-4 right-4 p-2 text-foreground/40 hover:text-foreground rounded-full hover:bg-muted transition-smooth"
+              aria-label="Close modal"
+            >
+              <X size={18} />
+            </button>
+            <div className="mb-6">
+              <span className="text-xs uppercase tracking-[0.3em] text-gold font-semibold">B2B Restock Inquiry</span>
+              <h2 className="font-display text-2xl font-semibold mt-2">Request Silhouette</h2>
+              <p className="text-xs text-foreground/60 mt-1">We will notify you immediately once this piece is back in stock.</p>
+            </div>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                toast.success(`Restock inquiry submitted! We will notify you at ${(e.target as any).email.value} as soon as this item is available.`);
+                setShowRestockModal(false);
+              }}
+              className="space-y-4"
+            >
+              <div>
+                <label className="field-label block mb-1.5 text-xs font-semibold uppercase tracking-wider text-foreground/75">Full Name</label>
+                <input name="fullName" type="text" required placeholder="e.g. Priya Sharma" className="w-full bg-foreground/[0.05] border border-border rounded-lg px-4 py-3 text-sm focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none transition-smooth text-foreground placeholder:text-foreground/30" />
+              </div>
+              <div>
+                <label className="field-label block mb-1.5 text-xs font-semibold uppercase tracking-wider text-foreground/75">Email Address</label>
+                <input name="email" type="email" required placeholder="name@company.com" className="w-full bg-foreground/[0.05] border border-border rounded-lg px-4 py-3 text-sm focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none transition-smooth text-foreground placeholder:text-foreground/30" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="field-label block mb-1.5 text-xs font-semibold uppercase tracking-wider text-foreground/75">Qty Required</label>
+                  <input name="quantity" type="number" required min="1" defaultValue="5" className="w-full bg-foreground/[0.05] border border-border rounded-lg px-4 py-3 text-sm focus:border-gold focus:ring-1 focus:ring-gold/30 outline-none transition-smooth text-foreground placeholder:text-foreground/30 font-price" />
+                </div>
+                <div>
+                  <label className="field-label block mb-1.5 text-xs font-semibold uppercase tracking-wider text-foreground/75">Item Name</label>
+                  <input type="text" disabled value={product.name} className="w-full bg-foreground/10 border border-border rounded-lg px-4 py-3 text-sm text-foreground/50 cursor-not-allowed font-medium truncate" />
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-gold text-obsidian py-3.5 uppercase tracking-widest text-xs font-bold rounded-full hover:bg-foreground hover:text-background transition-all duration-300 shadow-md mt-4"
+              >
+                Submit Restock Request
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

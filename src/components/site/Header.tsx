@@ -228,7 +228,7 @@ export const Header = () => {
 
           {/* Hamburger — below lg */}
           <button
-            className={`lg:hidden p-2.5 rounded-full ${textColor} ${hoverBgClass} transition-smooth`}
+            className={`lg:hidden w-12 h-12 grid place-items-center rounded-full ${textColor} ${hoverBgClass} transition-smooth`}
             onClick={() => setOpen((o) => !o)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
@@ -256,7 +256,7 @@ export const Header = () => {
             <button
               onClick={() => setOpen(false)}
               aria-label="Close menu"
-              className="p-2 rounded-full text-foreground hover:bg-muted transition-smooth"
+              className="w-12 h-12 grid place-items-center rounded-full text-foreground hover:bg-muted transition-all duration-500"
             >
               <X size={20} />
             </button>
