@@ -14,7 +14,7 @@ const Star = () => (
 );
 
 export const Marquee = () => (
-  <div className="bg-obsidian text-white border-y border-white/20 overflow-hidden">
+  <div className="bg-background text-foreground border-y border-border overflow-hidden transition-all duration-500">
     <div className="flex marquee-track whitespace-nowrap py-5">
       {[...ITEMS, ...ITEMS, ...ITEMS, ...ITEMS].map((t, i) => (
         <span key={i} className="flex items-center gap-6 px-6 font-display text-2xl md:text-3xl font-semibold">

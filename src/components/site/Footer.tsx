@@ -16,11 +16,11 @@ const POLICIES = [
 
 export const Footer = () => {
   return (
-    <footer className="bg-obsidian text-white">
+    <footer className="bg-background border-t border-border text-foreground transition-all duration-500">
       <div className="container py-20 grid gap-12 md:grid-cols-2 lg:grid-cols-4">
         <div>
-          <div className="font-display text-3xl text-white font-semibold">A K Enterprises</div>
-          <p className="mt-4 text-sm leading-relaxed text-white/80">
+          <div className="font-display text-3xl text-foreground font-semibold transition-colors">A K Enterprises</div>
+          <p className="mt-4 text-sm leading-relaxed text-foreground/80 transition-colors">
             Sculpting silent storytellers — mannequins, torsos and decor that
             elevate every space they inhabit.
           </p>
@@ -32,7 +32,7 @@ export const Footer = () => {
                 aria-label={label}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-10 h-10 grid place-items-center rounded-full border border-white/30 text-white hover:bg-gold hover:text-obsidian hover:border-gold transition-smooth"
+                className="w-10 h-10 grid place-items-center rounded-full border border-foreground/30 text-foreground hover:bg-gold hover:text-obsidian hover:border-gold transition-all duration-500"
               >
                 <Icon size={16} />
               </a>
@@ -42,7 +42,7 @@ export const Footer = () => {
 
         <div>
           <h4 className="text-xs uppercase tracking-[0.3em] text-gold mb-5 font-semibold">Explore</h4>
-          <ul className="space-y-3 text-sm text-white/90">
+          <ul className="space-y-3 text-sm text-foreground/90 transition-colors">
             {[
               { label: "Home", href: "/#home" },
               { label: "Product", href: "/#products" },
@@ -61,7 +61,7 @@ export const Footer = () => {
 
         <div>
           <h4 className="text-xs uppercase tracking-[0.3em] text-gold mb-5 font-semibold">Policies</h4>
-          <ul className="space-y-3 text-sm text-white/90">
+          <ul className="space-y-3 text-sm text-foreground/90 transition-colors">
             {POLICIES.map((p) => (
               <li key={p.label}>
                 <Link to={p.href} className="hover:text-gold transition-smooth">
@@ -74,17 +74,17 @@ export const Footer = () => {
 
         <div>
           <h4 className="text-xs uppercase tracking-[0.3em] text-gold mb-5 font-semibold">Contact</h4>
-          <ul className="space-y-3 text-sm text-white/90">
+          <ul className="space-y-3 text-sm text-foreground/90 transition-colors">
             <li className="flex items-start gap-3"><MapPin size={16} className="mt-0.5 text-gold flex-shrink-0" /> No 2/239 Konnur High Road<br/>Chennai, Tamil Nadu - 600023</li>
             <li className="flex items-center gap-3"><Phone size={16} className="text-gold flex-shrink-0" /> <a href="tel:+919884195244" className="hover:text-gold transition-smooth">+91 98841 95244</a></li>
             <li className="flex items-center gap-3"><Mail size={16} className="text-gold flex-shrink-0" /> <a href="mailto:akenterprisesbus26@gmail.com" className="hover:text-gold transition-smooth">akenterprisesbus26@gmail.com</a></li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-white/20">
-        <div className="container py-6 flex flex-col md:flex-row justify-between gap-3 text-xs text-white/70">
+      <div className="border-t border-border transition-colors">
+        <div className="container py-6 flex flex-col md:flex-row justify-between gap-3 text-xs text-foreground/70 transition-colors">
           <span>© {new Date().getFullYear()} A K Enterprises. All rights reserved.</span>
-          <span className="text-white/40">Crafted with intention · Chennai, India</span>
+          <span className="text-foreground/40 transition-colors">Crafted with intention · Chennai, India</span>
         </div>
       </div>
     </footer>
